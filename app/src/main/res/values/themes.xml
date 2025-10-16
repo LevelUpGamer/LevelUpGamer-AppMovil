@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.LevelUpGamer" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.LevelUpGamer" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- el contenido ira por debajo de la status bar -->
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowTranslucentStatus">false</item>
+
+
+    </style>
+
 </resources>
