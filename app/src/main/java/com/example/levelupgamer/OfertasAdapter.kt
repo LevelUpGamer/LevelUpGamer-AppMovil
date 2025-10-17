@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class OfertasAdapter : RecyclerView.Adapter<OfertasAdapter.OfertaViewHolder>() {
 
-    // 🔹 Tus 3 imágenes del carrusel
+    //  3 imágenes del carrusel
     private val listaOfertas = listOf(
         R.drawable.ofertab,
         R.drawable.ofertadmc,
