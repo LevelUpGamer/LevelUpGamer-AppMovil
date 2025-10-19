@@ -8,8 +8,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.yourpackage.R // Asegúrate de cambiar esto
-import com.yourpackage.data.CartItem // Usa tu data class
+import com.example.levelupgamer.R
+import com.example.levelupgamer.CartItem
 
 class CartAdapter(
     private val items: MutableList<CartItem>,
