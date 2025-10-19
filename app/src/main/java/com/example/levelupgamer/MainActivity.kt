@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     // Declaración correcta de la variable para controlar la visibilidad de la Splash Screen
     private var keepSplashScreen = true
 
-    // ✅ La función onCreate debe declararse SOLO UNA VEZ
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // --- 1. Lógica de la Splash Screen (Debe ir PRIMERO) ---
