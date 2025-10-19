@@ -88,7 +88,6 @@ class DrawerActivity: ComponentActivity() {
 
                             else -> {}
                         }
-                        }
                     }
                 }
             }
