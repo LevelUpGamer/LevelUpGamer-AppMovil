@@ -62,6 +62,10 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.compose.material:material-icons-extended:1.6.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.cardview:cardview:1.0.0")
+
+
 
 
 }
