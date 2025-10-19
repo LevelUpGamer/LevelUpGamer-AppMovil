@@ -1,3 +1,4 @@
+
 package com.example.levelupgamer
 
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen // 
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.levelupgamer.adapter.OfertasAdapter
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         // Referencia y configuración del RecyclerView
         val rvOfertas = findViewById<RecyclerView>(R.id.rv_ofertas_semanales)
         rvOfertas.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rvOfertas.adapter = OfertasAdapter() // Asegúrate de tener esta clase definida
+        rvOfertas.adapter = OfertasAdapter()
 
         // Configuración del Navigation Drawer
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         interruptorMenu = ActionBarDrawerToggle(
             this, drawerLayout,
             R.string.open_drawer,
-            R.string.close_drawer // Asegúrate de tener estos strings definidos en res/values/strings.xml
+            R.string.close_drawer
         )
         drawerLayout.addDrawerListener(interruptorMenu)
         // Habilita el ícono de la hamburguesa
@@ -71,14 +73,15 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_home -> Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show()
                 R.id.nav_catalogo -> Toast.makeText(this, "Catálogo", Toast.LENGTH_SHORT).show()
-                R.id.nav_perfil -> Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show()
+                R.id.nav_carrito -> Toast.makeText(this, "Carrito", Toast.LENGTH_SHORT).show()
+                R.id.nav_cerrar_sesion -> Toast.makeText(this, "Cerrar sesión", Toast.LENGTH_SHORT).show()
             }
             drawerLayout.closeDrawers()
             true
         }
     }
 
-    // Método para manejar el clic en el botón de la hamburguesa (ActionBarDrawerToggle)
+    // Metodo para manejar el clic en el botón de la hamburguesa, el interruptor menú (ActionBarDrawerToggle)
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         if (interruptorMenu.onOptionsItemSelected(item)) true
         else super.onOptionsItemSelected(item)

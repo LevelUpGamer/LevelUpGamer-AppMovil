@@ -1,4 +1,4 @@
-package com.example.levelupgamer
+package com.example.levelupgamer.data
 
 data class CartItem(
     val id: Int,

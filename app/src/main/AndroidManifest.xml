@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Starting">
 
-        <!-- 1. REGISTRO ACTIVITY: AHORA es el punto de inicio (LAUNCHER) -->
         <activity
             android:name=".RegistroActivity"
             android:exported="true"
@@ -24,13 +23,15 @@
             </intent-filter>
         </activity>
 
-        <!-- 2. MAIN ACTIVITY: Es una actividad normal, ya no inicia la app -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
-            <!-- ¡Ya no tiene el intent-filter! -->
         </activity>
 
-    </application>
+        <activity
+            android:name=".CartActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity">
+        </activity>
 
-</manifest>
+    </application> </manifest>
