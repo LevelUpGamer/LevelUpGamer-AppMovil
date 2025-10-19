@@ -10,16 +10,27 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App.Starting">  <activity
-        android:name=".MainActivity"
-        android:exported="true">
+        android:theme="@style/Theme.App.Starting">
 
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+        <!-- 1. REGISTRO ACTIVITY: AHORA es el punto de inicio (LAUNCHER) -->
+        <activity
+            android:name=".RegistroActivity"
+            android:exported="true"
+            android:theme="@style/Theme.LevelUpGamer">
 
-    </activity>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 2. MAIN ACTIVITY: Es una actividad normal, ya no inicia la app -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <!-- ¡Ya no tiene el intent-filter! -->
+        </activity>
+
     </application>
 
 </manifest>
