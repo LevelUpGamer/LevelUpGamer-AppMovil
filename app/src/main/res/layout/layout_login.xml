@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintTop_margin="100dp"/>
+        android:layout_marginTop="100dp"/>
 
     <!-- Campo de contraseña -->
     <EditText
