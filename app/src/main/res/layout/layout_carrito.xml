@@ -39,13 +39,8 @@
             android:hint="Buscar juegos..."
             android:paddingHorizontal="10dp"
             android:textColor="@android:color/white"
-            android:textColorHint="#999"/> <ImageButton
-            android:id="@+id/btnCart"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="Carrito"
-            android:src="@drawable/outline_delete_24"/> </LinearLayout>
+            android:textColorHint="#999"/>
+             </LinearLayout>
 
         <TextView
             android:id="@+id/title_cart"

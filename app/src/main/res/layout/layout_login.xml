@@ -105,7 +105,7 @@
         />
 
     <Button
-        android:id="@+id/btn_send"
+        android:id="@+id/btn_registrarse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -113,7 +113,7 @@
         android:layout_marginTop="40dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:text="Enviar"
+        android:text="Registrarse"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"

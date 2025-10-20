@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 
+
 class RegistroActivity : AppCompatActivity() {
 
     // Nombres de las claves para SharedPreferences
@@ -19,16 +20,12 @@ class RegistroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val btn: Button=findViewById(R.id.btn_send)
-        btn.setOnClickListener {
-            val intent: Intent= Intent(this, RegistroActivity:: class.java)
-            startActivity(intent)
-        }
 
-        // ¡CORRECCIÓN APLICADA! Ahora apunta a 'layout_registro'
+
+
         setContentView(R.layout.layout_registro)
 
-        // Referencias a los componentes del layout
+
         val etUsuario = findViewById<EditText>(R.id.et_usuario)
         val etContrasena = findViewById<EditText>(R.id.et_contrasena)
         val btnSend = findViewById<Button>(R.id.btn_send)
@@ -48,8 +45,11 @@ class RegistroActivity : AppCompatActivity() {
                 // Mensaje de éxito
                 Toast.makeText(this, "¡Registro exitoso! Datos guardados localmente.", Toast.LENGTH_LONG).show()
 
-                // Opcional: Navegar a la siguiente Activity (por ejemplo, la pantalla principal/login)
-                // finish()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+
+                // 3. Cerrar RegistroActivity para que no se pueda devolver
+                finish()
             }
         }
     }
