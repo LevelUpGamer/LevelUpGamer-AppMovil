@@ -54,14 +54,19 @@ class MainActivity : AppCompatActivity() {
         // Click en items del menú lateral
         navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show()
+                R.id.nav_home -> {
+                    val intent =Intent( this, MainActivity:: class.java)
+                    startActivity(intent)
+                }
                 R.id.nav_catalogo -> {
                     val intent = Intent(this, CatalogActivity::class.java)
                     startActivity(intent)
                 }
                 R.id.nav_carrito -> Toast.makeText(this, "Carrito", Toast.LENGTH_SHORT).show()
-                R.id.nav_cerrar_sesion -> Toast.makeText(this, "Cerrar sesión", Toast.LENGTH_SHORT)
-                    .show()
+                R.id.nav_cerrar_sesion ->{
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
             }
             drawerLayout.closeDrawers()
             true
