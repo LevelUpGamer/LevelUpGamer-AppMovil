@@ -42,6 +42,10 @@
         <activity android:name=".CatalogActivity"
             android:exported="false"
             android:theme="@style/Theme.LevelUpGamer" />
+        <!-- Carrito -->
+        <activity android:name=".CartActivity"
+            android:exported="false"
+            android:theme="@style/Theme.LevelUpGamer" />
 
     </application>
 

@@ -62,7 +62,10 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this, CatalogActivity::class.java)
                     startActivity(intent)
                 }
-                R.id.nav_carrito -> Toast.makeText(this, "Carrito", Toast.LENGTH_SHORT).show()
+                R.id.nav_carrito -> {
+                    val intent = Intent(this, CartActivity::class.java)
+                    startActivity(intent)
+                }
                 R.id.nav_cerrar_sesion ->{
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
