@@ -55,7 +55,10 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show()
-                R.id.nav_catalogo -> Toast.makeText(this, "Catálogo", Toast.LENGTH_SHORT).show()
+                R.id.nav_catalogo -> {
+                    val intent = Intent(this, CatalogActivity::class.java)
+                    startActivity(intent)
+                }
                 R.id.nav_carrito -> Toast.makeText(this, "Carrito", Toast.LENGTH_SHORT).show()
                 R.id.nav_cerrar_sesion -> Toast.makeText(this, "Cerrar sesión", Toast.LENGTH_SHORT)
                     .show()

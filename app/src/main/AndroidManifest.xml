@@ -37,6 +37,12 @@
             android:name=".RegistroActivity"
             android:exported="false"
             android:theme="@style/Theme.LevelUpGamer" />
+
+        <!-- Catalogo -->
+        <activity android:name=".CatalogActivity"
+            android:exported="false"
+            android:theme="@style/Theme.LevelUpGamer" />
+
     </application>
 
 
