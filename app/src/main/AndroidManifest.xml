@@ -28,10 +28,6 @@
             android:exported="true">
         </activity>
 
-        <activity
-            android:name=".CartActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity">
-        </activity>
+
 
     </application> </manifest>

@@ -90,7 +90,6 @@
         android:text="Enviar"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:textAllCaps="true"
         android:textStyle="bold"
         android:background="@drawable/button_registro"
         app:layout_constraintEnd_toEndOf="parent"
