@@ -2,11 +2,10 @@ package com.example.levelupgamer
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Layout
-import android.view.Menu
-import android.view.MenuItem
+// Importa Producto y CarritoManager para la lógica del carrito
+import com.example.levelupgamer.Producto
+import com.example.levelupgamer.CarritoManager
 import android.widget.Button
-import com.example.levelupgamer.R
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -21,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 class CatalogoActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_catalogo)
@@ -38,63 +38,49 @@ class CatalogoActivity : AppCompatActivity() {
         btnMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
         }
-        val btnAgregarCarrito: Button = findViewById(R.id.btnAgregar)
 
-        // 2. Define el producto que se va a agregar
-        // (En una app real, este producto se obtendría del item de la lista que el usuario toca)
-        val productoDeEjemplo = Producto(
+
+        // 1. Definir los objetos Producto que serán agregados.
+        //    (Asegúrate de que R.drawable.eldenringportada y resident4 existan)
+        val eldenRing = Producto(
             id = 1,
-            nombre = "Street Fighter vs Tekkan",
-            precio = 29.990, // Usa el valor Double correcto
-            imagenResId = R.drawable.ic_menu // Reemplaza con el ID de la imagen real del juego
+            nombre = "Elden Ring",
+            precio = 29990.0, // Usar Double
+            imagenResId = R.drawable.eldenringportada
         )
 
-        btnAgregarCarrito.setOnClickListener {
-            // Llama al gestor global para guardar el producto
-            CarritoManager.agregarProducto(productoDeEjemplo)
+        val residentEvil4 = Producto(
+            id = 2,
+            nombre = "Resident Evil 4",
+            precio = 15990.0, // Usar Double
+            imagenResId = R.drawable.resident4
+        )
 
-            // Muestra un mensaje de confirmación
-            Snackbar.make(btnAgregarCarrito, "${productoDeEjemplo.nombre} agregado!", Snackbar.LENGTH_SHORT).show()
+        // 2. Listener para el botón de ELDEN RING (ID: btnAgregar)
+        val btnAgregarElden: Button = findViewById(R.id.btnAgregar)
+        btnAgregarElden.setOnClickListener {
+            CarritoManager.agregarProducto(eldenRing)
+            Snackbar.make(it, "${eldenRing.nombre} agregado!", Snackbar.LENGTH_SHORT).show()
         }
 
-
-
-
+        // 3. Listener para el botón de RESIDENT EVIL 4 (ID: btnAgregar2)
+        val btnAgregarResident: Button = findViewById(R.id.btnAgregar2) // ¡Añadido!
+        btnAgregarResident.setOnClickListener {
+            CarritoManager.agregarProducto(residentEvil4)
+            Snackbar.make(it, "${residentEvil4.nombre} agregado!", Snackbar.LENGTH_SHORT).show()
+        }
 
 
         // Click en items del menú lateral
         navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                }
-
-                R.id.nav_catalogo -> {
-                    val intent = Intent(this, CatalogoActivity::class.java)
-                    startActivity(intent)
-                }
-
-                R.id.nav_carrito -> {
-                    val intent = Intent(this, CartActivity::class.java)
-                    startActivity(intent)
-                }
-
-                R.id.nav_cerrar_sesion -> {
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                }
+                R.id.nav_home -> startActivity(Intent(this, MainActivity::class.java))
+                R.id.nav_catalogo -> startActivity(Intent(this, CatalogoActivity::class.java))
+                R.id.nav_carrito -> startActivity(Intent(this, CartActivity::class.java))
+                R.id.nav_cerrar_sesion -> startActivity(Intent(this, LoginActivity::class.java))
             }
             drawerLayout.closeDrawers()
             true
         }
     }
-
 }
-
-
-
-
-
-
-
