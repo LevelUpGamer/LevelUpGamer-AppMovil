@@ -1,6 +1,6 @@
-
 package com.example.levelupgamer
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -44,6 +44,10 @@ class MainActivity : AppCompatActivity() {
         // Cuando los datos estén listos, cambia 'keepSplashScreen' a false
         Handler(Looper.getMainLooper()).postDelayed({
             keepSplashScreen = false // La splash screen se descarta
+            // Redirige a LoginActivity
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish() // Cierra MainActivity para que el usuario no pueda volver
         }, 3000) // Mantiene la pantalla por 3 segundos para la demostración/carga
 
         // --- 3. Lógica del Layout Principal (RecyclerView y Navigation Drawer) ---
