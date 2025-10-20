@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:width="150dp"
+        android:height="150dp"
+        android:gravity="center">
+
+        <inset android:drawable="@drawable/ic_levelupgamer"
+            android:insetLeft="20dp"
+            android:insetRight="20dp"
+            android:insetTop="20dp"
+            android:insetBottom="20dp" />
+    </item>
+
+</layer-list>
