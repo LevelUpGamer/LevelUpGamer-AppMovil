@@ -1,5 +1,7 @@
 package com.example.levelupgamer.utils
 
+import com.example.levelupgamer.data.CartItem
+
 class CartManager {
 
     object CartManager {
