@@ -1,7 +1,8 @@
-package com.example.levelupgamer
+package com.example.levelupgamer.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.levelupgamer.R
 
 class CatalogActivity : AppCompatActivity() {
 

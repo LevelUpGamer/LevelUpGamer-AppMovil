@@ -1,14 +1,12 @@
-package com.example.levelupgamer
+package com.example.levelupgamer.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-
+import androidx.appcompat.app.AppCompatActivity
+import com.example.levelupgamer.R
 
 class RegistroActivity : AppCompatActivity() {
 
@@ -59,7 +57,7 @@ class RegistroActivity : AppCompatActivity() {
      */
     private fun guardarCredenciales(usuario: String, contrasena: String) {
         // Obtenemos una instancia de SharedPreferences
-        val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
 
         // Obtenemos un Editor para modificar los datos
         val editor = sharedPreferences.edit()

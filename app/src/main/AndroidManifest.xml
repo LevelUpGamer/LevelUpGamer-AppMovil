@@ -11,7 +11,7 @@
 
         <!-- Splash -->
         <activity
-            android:name=".SplashActivity"
+            android:name=".view.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.LevelUpGamer.Splash">
             <intent-filter>
@@ -22,28 +22,28 @@
 
         <!-- Login -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".view.LoginActivity"
             android:exported="false"
             android:theme="@style/Theme.LevelUpGamer" />
 
         <!-- Home -->
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="false"
             android:theme="@style/Theme.LevelUpGamer" />
 
         <!-- Registro -->
         <activity
-            android:name=".RegistroActivity"
+            android:name=".view.RegistroActivity"
             android:exported="false"
             android:theme="@style/Theme.LevelUpGamer" />
 
         <!-- Catalogo -->
-        <activity android:name=".CatalogActivity"
+        <activity android:name=".view.CatalogActivity"
             android:exported="false"
             android:theme="@style/Theme.LevelUpGamer" />
         <!-- Carrito -->
-        <activity android:name=".CartActivity"
+        <activity android:name=".view.CartActivity"
             android:exported="false"
             android:theme="@style/Theme.LevelUpGamer" />
 

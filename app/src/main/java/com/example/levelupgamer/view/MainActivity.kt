@@ -1,18 +1,16 @@
-package com.example.levelupgamer
+package com.example.levelupgamer.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.levelupgamer.R
 import com.example.levelupgamer.adapter.OfertasAdapter
 import com.google.android.material.navigation.NavigationView
 
@@ -36,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         // Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "" 
+        supportActionBar?.title = ""
 
         // Botón hamburguesa manual
         val btnMenu: ImageButton = findViewById(R.id.btnMenu)
@@ -55,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    val intent =Intent( this, MainActivity:: class.java)
+                    val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                 }
                 R.id.nav_catalogo -> {

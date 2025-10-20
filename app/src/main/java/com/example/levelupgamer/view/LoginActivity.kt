@@ -1,12 +1,14 @@
-package com.example.levelupgamer
+package com.example.levelupgamer.view
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.levelupgamer.view.MainActivity
+import com.example.levelupgamer.R
+import com.example.levelupgamer.view.RegistroActivity
 
 class LoginActivity: AppCompatActivity() {
     // misma config de claves que en Registro
@@ -18,9 +20,9 @@ class LoginActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_login)
 
-        val btn: Button=findViewById(R.id.btn_registrarse)
+        val btn: Button =findViewById(R.id.btn_registrarse)
         btn.setOnClickListener {
-            val intent: Intent= Intent(this, RegistroActivity:: class.java)
+            val intent: Intent = Intent(this, RegistroActivity::class.java)
             startActivity(intent)
         }
 
@@ -55,7 +57,7 @@ class LoginActivity: AppCompatActivity() {
 
     //verificación de credenciales guardadas con las que están en SharedPreferences
     private fun verificarCredenciales(usuario: String, contrasena: String): Boolean {
-        val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
         val usuarioGuardado = sharedPreferences.getString(KEY_USERNAME, null)
         val passGuardada = sharedPreferences.getString(KEY_PASSWORD, null)
 
