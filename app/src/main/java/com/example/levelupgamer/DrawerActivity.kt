@@ -17,6 +17,7 @@ import com.example.levelupgamer.ui.LevelUpDrawer
 import com.example.levelupgamer.viewmodel.DrawerUiState
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 class DrawerActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
