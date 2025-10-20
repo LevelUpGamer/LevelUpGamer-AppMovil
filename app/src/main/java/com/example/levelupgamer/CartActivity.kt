@@ -1,4 +1,4 @@
-package com.example.levelupgamer.adapter
+package com.example.levelupgamer
 
 import android.view.LayoutInflater
 import android.view.View
