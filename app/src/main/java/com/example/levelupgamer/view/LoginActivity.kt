@@ -28,31 +28,31 @@ class LoginActivity: AppCompatActivity() {
 
 
 
-    val usuarioInput = findViewById<EditText>(R.id.usuarioInput)
-    val campoPass = findViewById<EditText>(R.id.campoPass)
-    val btnLogin = findViewById<Button>(R.id.btnLogin)
+        val usuarioInput = findViewById<EditText>(R.id.usuarioInput)
+        val campoPass = findViewById<EditText>(R.id.campoPass)
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
 
-    //listener del btnLogin
-    btnLogin.setOnClickListener {
-        val usuario = usuarioInput.text.toString().trim()
-        val contrasena = campoPass.text.toString().trim()
+        //listener del btnLogin
+        btnLogin.setOnClickListener {
+            val usuario = usuarioInput.text.toString().trim()
+            val contrasena = campoPass.text.toString().trim()
 
-        //validando los campos
-        if (usuario.isEmpty() || contrasena.isEmpty()){
-            Toast.makeText(this, "Por favor, complete ambos campos.", Toast.LENGTH_SHORT).show()
-        } else {
-            if (verificarCredenciales(usuario, contrasena)) {
-                Toast.makeText(this, "Inicio de sesión exitoso.", Toast.LENGTH_SHORT).show()
-
-                // Ir a la pantalla ppal
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+            //validando los campos
+            if (usuario.isEmpty() || contrasena.isEmpty()){
+                Toast.makeText(this, "Por favor, complete ambos campos.", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Usuario o contraseña incorrectos. Inténtelo de nuevo.", Toast.LENGTH_SHORT).show()
+                if (verificarCredenciales(usuario, contrasena)) {
+                    Toast.makeText(this, "Inicio de sesión exitoso.", Toast.LENGTH_SHORT).show()
+
+                    // Ir a la pantalla ppal
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this, "Usuario o contraseña incorrectos. Inténtelo de nuevo.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
-    }
     }
 
     //verificación de credenciales guardadas con las que están en SharedPreferences
