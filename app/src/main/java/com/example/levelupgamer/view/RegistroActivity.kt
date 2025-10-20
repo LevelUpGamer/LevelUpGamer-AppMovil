@@ -1,13 +1,12 @@
-package com.example.levelupgamer
+package com.example.levelupgamer.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatActivity
+import com.example.levelupgamer.R
 
 class RegistroActivity : AppCompatActivity() {
 
@@ -19,16 +18,12 @@ class RegistroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val btn: Button=findViewById(R.id.btn_send)
-        btn.setOnClickListener {
-            val intent: Intent= Intent(this, RegistroActivity:: class.java)
-            startActivity(intent)
-        }
 
-        // ¡CORRECCIÓN APLICADA! Ahora apunta a 'layout_registro'
+
+
         setContentView(R.layout.layout_registro)
 
-        // Referencias a los componentes del layout
+
         val etUsuario = findViewById<EditText>(R.id.et_usuario)
         val etContrasena = findViewById<EditText>(R.id.et_contrasena)
         val btnSend = findViewById<Button>(R.id.btn_send)
@@ -48,8 +43,11 @@ class RegistroActivity : AppCompatActivity() {
                 // Mensaje de éxito
                 Toast.makeText(this, "¡Registro exitoso! Datos guardados localmente.", Toast.LENGTH_LONG).show()
 
-                // Opcional: Navegar a la siguiente Activity (por ejemplo, la pantalla principal/login)
-                // finish()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+
+                // 3. Cerrar RegistroActivity para que no se pueda devolver
+                finish()
             }
         }
     }
@@ -59,7 +57,7 @@ class RegistroActivity : AppCompatActivity() {
      */
     private fun guardarCredenciales(usuario: String, contrasena: String) {
         // Obtenemos una instancia de SharedPreferences
-        val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
 
         // Obtenemos un Editor para modificar los datos
         val editor = sharedPreferences.edit()

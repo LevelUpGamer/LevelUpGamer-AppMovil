@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_inicioregistro"
     android:padding="24dp"
-    tools:context=".LoginActivity">
+    tools:context=".view.LoginActivity">
 
     <ImageView
         android:id="@+id/img_logo"
@@ -86,26 +86,24 @@
         app:layout_constraintTop_toBottomOf="@id/lbl_contrasena" />
 
     <!-- Botón de iniciar sesión -->
-    <Button
-
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
-
         android:text="Iniciar sesión"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/campoPass"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:background="@drawable/button_iniciosesion"
-        />
 
-    <Button
-        android:id="@+id/btn_send"
+        android:background="@drawable/button_iniciosesion"
+        app:backgroundTint="@null"  app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/campoPass"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_registrarse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -113,12 +111,12 @@
         android:layout_marginTop="40dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:text="Enviar"
+        android:text="Registrarse"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:background="@drawable/button_registro"
-        app:layout_constraintEnd_toEndOf="parent"
+
+        android:background="@drawable/button_registro"  app:backgroundTint="@null"                      app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 
