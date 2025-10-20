@@ -39,7 +39,7 @@
             android:theme="@style/Theme.LevelUpGamer" />
 
         <!-- Catalogo -->
-        <activity android:name=".view.CatalogActivity"
+        <activity android:name=".CatalogoActivity"
             android:exported="false"
             android:theme="@style/Theme.LevelUpGamer" />
         <!-- Carrito -->

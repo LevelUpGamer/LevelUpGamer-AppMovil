@@ -10,6 +10,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.levelupgamer.CatalogoActivity
 import com.example.levelupgamer.R
 import com.example.levelupgamer.adapter.OfertasAdapter
 import com.google.android.material.navigation.NavigationView
@@ -17,7 +18,6 @@ import com.google.android.material.navigation.NavigationView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
-    // Ya no necesitamos ActionBarDrawerToggle si usamos el botón manual
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.nav_catalogo -> {
-                    val intent = Intent(this, CatalogActivity::class.java)
+                    val intent = Intent(this, CatalogoActivity::class.java)
                     startActivity(intent)
                 }
                 R.id.nav_carrito -> {
