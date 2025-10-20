@@ -17,6 +17,8 @@ import com.example.levelupgamer.adapter.CartAdapter
 import com.example.levelupgamer.view.MainActivity
 import com.example.levelupgamer.view.LoginActivity
 import com.google.android.material.navigation.NavigationView
+import java.text.NumberFormat
+import java.util.Locale
 
 class CartActivity : AppCompatActivity() {
 
@@ -75,19 +77,34 @@ class CartActivity : AppCompatActivity() {
 
 
     private fun setupRecyclerView() {
-        // Asegúrate de que CarritoAdapter exista y acepte List<Producto>
-        val adapter = CartAdapter(CarritoManager.items)
+
+        // **SOLUCIÓN:** Asegúrate de que estás pasando el callback al constructor
+        val adapter = CartAdapter(
+            items = CarritoManager.items,
+            // Pasamos la función que recalcula y actualiza la UI
+            onItemRemovedCallback = { updateCartUI() }
+        )
+
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
     }
 
     private fun updateCartUI() {
-        // 1. Notificar al adapter que la lista de productos cambió
+
         (recyclerView.adapter as? CartAdapter)?.updateItems(CarritoManager.items)
 
-        // 2. Actualizar el valor total
+
         val total = CarritoManager.calcularTotal()
-        // Formato: Muestra el total con dos decimales, incluso si son cero
-        totalTextView.text = "$${String.format("%.2f", total)}"
+
+
+        val format = NumberFormat.getNumberInstance(Locale("es", "CL"))
+        format.maximumFractionDigits = 0 // No mostrar decimales (ej: 0.00)
+        format.minimumFractionDigits = 0 // Asegura que no haya decimales
+
+
+        val totalFormateado = format.format(total)
+
+
+        totalTextView.text = "$$totalFormateado"
     }
 }
