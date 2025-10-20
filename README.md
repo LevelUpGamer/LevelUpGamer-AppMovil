@@ -17,4 +17,4 @@ El objetivo del proyecto es demostrar el uso de componentes de Jetpack Compose, 
 - **Persistencia de datos temporal:** manejo de ítems seleccionados mediante `CartManager` y `ViewModel`.
 - **Arquitectura y organización:** 
   - `model.navigation` con `Screen` y `NavigationEvent`.
-  - Separación por paquetes (`adapter`, `data`, `utils`, `viewmodel`, `ui/theme`).
+  - Separación por paquetes (`adapter`, `data`, `model/navigation`, `ui/theme`, `utils`, `view`, `viewmodel`).
