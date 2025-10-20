@@ -1,3 +1,5 @@
+
+
 package com.example.levelupgamer.adapter
 
 import android.view.LayoutInflater
@@ -7,55 +9,55 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.levelupgamer.CarritoManager
+import com.example.levelupgamer.Producto
 import com.example.levelupgamer.R
-import com.example.levelupgamer.data.CartItem
 
-// El adaptador recibe la lista de ítems y un lambda (función) para manejar la eliminación
+// Asegúrate de que CarritoManager y Producto estén accesibles o importados
+
 class CartAdapter(
-    private val items: MutableList<CartItem>,
-    private val onDeleteClick: (CartItem) -> Unit
-) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
+    private var items: List<Producto>,
+    private val onItemRemovedCallback: (() -> Unit)? = null) :
+    RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
-    // El ViewHolder enlaza las vistas del item_cart.xml con los datos
-    class CartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val itemName: TextView = view.findViewById(R.id.text_item_name)
-        val itemPrice: TextView = view.findViewById(R.id.text_item_price)
-        val itemImage: ImageView = view.findViewById(R.id.image_item)
-        val deleteButton: ImageButton = view.findViewById(R.id.image_delete)
+    // 1. Define el ViewHolder: Mantiene las referencias a las vistas de un ítem.
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        val nombreJuego: TextView = view.findViewById(R.id.text_nombre_juego)
+        val precio: TextView = view.findViewById(R.id.text_precio)
+        val imagen: ImageView = view.findViewById(R.id.image_juego)
+
+        val basurero: ImageButton= view.findViewById(R.id.btn_eliminar_item)
     }
 
-    // 1. Crea la vista (infla el layout)
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
+    //Crea nuevas vistas (Layout Manager llama a esto)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        // Reemplaza 'layout_item_carrito' con el nombre real de tu layout para un solo producto
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_cart, parent, false)
-        return CartViewHolder(view)
+            .inflate(R.layout.item_carrito, parent, false)
+        return ViewHolder(view)
     }
 
-    // 2. Llena la vista con datos
-    override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
-        val item = items[position]
 
-        holder.itemName.text = item.name
-        holder.itemPrice.text = item.price
-        holder.itemImage.setImageResource(item.imageResId)
-
-        // Configura el clic en el botón de eliminación
-        holder.deleteButton.setOnClickListener {
-            // Llama a la función que se definió en CartActivity
-            onDeleteClick(item)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val producto = items[position]
+        holder.nombreJuego.text = producto.nombre
+        holder.precio.text = "$${String.format("%.2f", producto.precio)}"
+        holder.imagen.setImageResource(producto.imagenResId)
+        // Aquí iría el código para el ImageButton de la papelera
+        holder.basurero.setOnClickListener {
+            CarritoManager.eliminarProducto(producto)
+            updateItems(CarritoManager.items)
+            onItemRemovedCallback?.invoke()
         }
     }
 
-    // 3. Retorna la cantidad de ítems
-    override fun getItemCount(): Int = items.size
 
-    // Función para manejar la eliminación desde la Activity
-    fun removeItem(item: CartItem) {
-        val index = items.indexOf(item)
-        if (index != -1) {
-            items.removeAt(index)
-            notifyItemRemoved(index)
-            // notifyItemRangeChanged(index, items.size) // Opcional, si hay más cambios
-        }
+    override fun getItemCount() = items.size
+
+
+    fun updateItems(newItems: List<Producto>) {
+        this.items = newItems
+        notifyDataSetChanged() // Le dice al RecyclerView que redibuje toda la lista.
     }
 }
