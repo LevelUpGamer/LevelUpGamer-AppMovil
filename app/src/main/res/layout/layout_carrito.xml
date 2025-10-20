@@ -1,47 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Contenido principal -->
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#2B0030">
 
-        <LinearLayout
-            android:id="@+id/header_bar"
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#800060"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="8dp"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="#800060">
 
-            <ImageButton
-                android:id="@+id/btnMenu"
-                android:layout_width="30dp"
-                android:layout_height="20dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="Menú"
-                android:src="@drawable/ic_menu"
-                android:layout_marginEnd="8dp"/> <EditText
-            android:id="@+id/searchBar"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/search_background"
-            android:hint="Buscar juegos..."
-            android:paddingHorizontal="10dp"
-            android:textColor="@android:color/white"
-            android:textColorHint="#999"/>
-             </LinearLayout>
+            <!-- LinearLayout dentro del Toolbar para botones -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
 
+                <ImageButton
+                    android:id="@+id/btnMenu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_menu"
+                    android:contentDescription="Menú"/>
+
+                <EditText
+                    android:id="@+id/searchBar"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/search_background"
+                    android:hint="Buscar juegos..."
+                    android:textColor="@android:color/white"
+                    android:textColorHint="#999"/>
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <!-- Título carrito -->
         <TextView
             android:id="@+id/title_cart"
             android:layout_width="wrap_content"
@@ -49,67 +54,68 @@
             android:text="Tu carrito de compras"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:padding="16dp"
-            app:layout_constraintTop_toBottomOf="@id/header_bar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:padding="16dp"/>
 
+        <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_cart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/footer_bar"
-            app:layout_constraintTop_toBottomOf="@id/title_cart"
-            app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="16dp"
-            tools:listitem="@layout/item_cart"
-            tools:itemCount="1"/>/>
+            android:layout_weight="1"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/footer_bar"
+        <!-- Footer -->
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
+            android:background="#222222">
 
-            app:layout_constraintBottom_toBottomOf="parent">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/text_total_label"
-                android:text="Total:"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/text_total_label"
+                    android:text="Total:"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/text_total_value"
+                    android:text="$29.990"
+                    android:textColor="#E91E63"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_checkout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Paga de forma segura"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/> <TextView
-            android:id="@+id/text_total_value"
-            android:text="$29.990"
+                android:backgroundTint="#E91E63"
+                android:layout_marginTop="16dp"/>
+        </LinearLayout>
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#E91E63"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/> <Button
-            android:id="@+id/button_checkout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Paga de forma segura"
-            android:textColor="@android:color/white"
-            android:backgroundTint="#E91E63"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/text_total_label"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <!-- Menú lateral -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/menu_drawer"/>
-
+        app:menu="@menu/menu_drawer"
+        android:background="#800060"
+        app:headerLayout="@layout/nav_header"
+        app:itemTextColor="@android:color/white"
+        app:itemIconTint="@android:color/white"/>
 </androidx.drawerlayout.widget.DrawerLayout>
