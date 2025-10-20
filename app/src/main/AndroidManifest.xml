@@ -16,7 +16,12 @@
             android:name=".RegistroActivity"
             android:exported="false"
             android:theme="@style/Theme.LevelUpGamer">
+        </activity>
 
+        <activity
+        android:name=".LoginActivity"
+        android:exported="false"
+        android:theme="@style/Theme.LevelUpGamer">
         </activity>
 
         <activity
