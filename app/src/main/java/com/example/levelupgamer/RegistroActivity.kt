@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 
 class RegistroActivity : AppCompatActivity() {
@@ -17,6 +18,12 @@ class RegistroActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val btn: Button=findViewById(R.id.btn_send)
+        btn.setOnClickListener {
+            val intent: Intent= Intent(this, RegistroActivity:: class.java)
+            startActivity(intent)
+        }
 
         // ¡CORRECCIÓN APLICADA! Ahora apunta a 'layout_registro'
         setContentView(R.layout.layout_registro)
