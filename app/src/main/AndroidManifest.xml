@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,28 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LevelUpGamer">
 
-        <!-- Splash -->
+        <!-- Login: pantalla inicial -->
         <activity
-            android:name=".view.SplashActivity"
+            android:name=".view.LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.LevelUpGamer.Splash">
+            android:theme="@style/Theme.LevelUpGamer" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <!-- Login -->
+        <!-- Drawer principal (Home + Catálogo + Carrito) -->
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.DrawerActivity"
             android:exported="false"
-            android:theme="@style/Theme.LevelUpGamer" />
-
-        <!-- Home -->
-        <activity
-            android:name=".view.MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.LevelUpGamer" />
+            android:theme="@style/Theme.LevelUpGamer"/>
 
         <!-- Registro -->
         <activity
@@ -38,17 +33,6 @@
             android:exported="false"
             android:theme="@style/Theme.LevelUpGamer" />
 
-        <!-- Catalogo -->
-        <activity android:name=".CatalogoActivity"
-            android:exported="false"
-            android:theme="@style/Theme.LevelUpGamer" />
-        <!-- Carrito -->
-        <activity android:name=".view.CartActivity"
-            android:exported="false"
-            android:theme="@style/Theme.LevelUpGamer" />
-
     </application>
-
-
 
 </manifest>
