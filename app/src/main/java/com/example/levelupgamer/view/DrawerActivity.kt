@@ -8,26 +8,26 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.levelupgamer.model.navigation.Screen
 import com.example.levelupgamer.ui.CarritoScreen
 import com.example.levelupgamer.ui.CatalogoScreen
 import com.example.levelupgamer.ui.HomeScreen
 import com.example.levelupgamer.ui.LevelUpDrawer
+import com.example.levelupgamer.ui.LevelUpTopBar
 import com.example.levelupgamer.ui.theme.LevelUpGamerTheme
+import com.example.levelupgamer.viewmodel.AppUiState
 import com.example.levelupgamer.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -58,26 +58,45 @@ fun LevelUpRoot(
     viewModel: MainViewModel,
     onLogout: () -> Unit
 ) {
-    val estadoUi by viewModel.drawerAbierto.collectAsState()
+    val estadoUi by viewModel.estadoUi.collectAsState()
 
-    val drawerState = rememberDrawerState(
-        initialValue = if (estadoUi.open) DrawerValue.Open else DrawerValue.Closed
+    //Drawer y Navb controllers locales
+    val estadoDrawer = rememberDrawerState(
+        initialValue = if (estadoUi.drawer.open) DrawerValue.Open else DrawerValue.Closed
     )
+
     val corrutinaDrawer = rememberCoroutineScope()
+    val navController: NavHostController = rememberNavController()
+
+    // Cuando cambie la ruta seleccionada en el drawer, navegamos
+    LaunchedEffect(estadoUi.drawer.selected) {
+    //    val destino = estadoUi.drawer.selected
+//        navController.navigate(destino.route){
+//            launchSingleTop = true
+        navController.navigate(estadoUi.drawer.selected.route){
+            launchSingleTop = true
+        }
+    }
 
     ModalNavigationDrawer(
-        drawerState = drawerState,
+        drawerState = estadoDrawer,
         gesturesEnabled = false, // Sólo se abre con el botón hamburguesa
         drawerContent = {
             LevelUpDrawer(
-                estadoDrawer = estadoUi,
+                estadoDrawer = estadoUi.drawer,
                 onSelect = { screen ->
-                    when (screen) {
-                        Screen.CerrarSesion -> onLogout()
-                        else -> {
-                            viewModel.onDrawerItemClick(screen)
-                            corrutinaDrawer.launch { drawerState.close() }
-                        }
+//                    when (screen) {
+//                        Screen.CerrarSesion -> onLogout()
+//                        else -> {
+//                            viewModel.onDrawerItemClick(screen)
+//                            corrutinaDrawer.launch { estadoDrawer.close() }
+//                        }
+//                    }
+                    if (screen == Screen.CerrarSesion){
+                        onLogout()
+                    } else {
+                        viewModel.onDrawerItemClick(screen)
+                        corrutinaDrawer.launch { estadoDrawer.close() }
                     }
                 }
             )
@@ -85,25 +104,34 @@ fun LevelUpRoot(
     ) {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = estadoUi.selected.route
-                                .replace("_", " ")
-                                .replaceFirstChar { it.uppercase() }
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(
-                            onClick = {
-                                corrutinaDrawer.launch { drawerState.open() }
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Menu,
-                                contentDescription = "Abrir menú"
-                            )
-                        }
+//                TopAppBar(
+//                    title = {
+//                        Text(
+//                            text = estadoUi.drawer.selected.route
+//                                .replace("_", " ")
+//                                .replaceFirstChar { it.uppercase() }
+//                        )
+//                    },
+//                    navigationIcon = {
+//                        IconButton(
+//                            onClick = {
+//                                corrutinaDrawer.launch { estadoDrawer.open() }
+//                            }
+//                        ) {
+//                            Icon(
+//                                imageVector = Icons.Filled.Menu,
+//                                contentDescription = "Abrir menú"
+//                            )
+//                        }
+//                    }
+//                )
+                LevelUpTopBar(
+                    searchText = estadoUi.buscarConsulta,
+                    onSearchTextChange = { viewModel.onBuscarConsultaChange(it) },
+                    onMenuClick = { corrutinaDrawer.launch { estadoDrawer.open() } },
+                    onCartClick = {
+                        viewModel.onDrawerItemClick(Screen.Carrito)
+                        corrutinaDrawer.launch { estadoDrawer.close() }
                     }
                 )
             }
@@ -114,17 +142,74 @@ fun LevelUpRoot(
                     .padding(innerPadding)
             ) {
                 // Lo que se debería mostrar en cada pantalla
-                when (estadoUi.selected) {
-                    Screen.Home -> HomeScreen(
-                        onIrAlCarrito = {
-                            viewModel.onDrawerItemClick(Screen.Carrito)
-                        }
-                    )
-                    Screen.Catalogo -> CatalogoScreen()
-                    Screen.Carrito -> CarritoScreen()
-                    else -> { }
-                }
+//                when (estadoUi.drawer.selected) {
+//                    Screen.Home -> HomeScreen(
+//                        onIrAlCarrito = {
+//                            viewModel.onDrawerItemClick(Screen.Carrito)
+//                        }
+//                    )
+//                    Screen.Catalogo -> CatalogoScreen()
+//                    Screen.Carrito -> CarritoScreen()
+//                    else -> { }
+                LevelUpNavHost(
+                    navController = navController,
+                    viewModel = viewModel,
+                    estadoUi = estadoUi
+                )
             }
+        }
+    }
+}
+
+
+@Composable
+fun LevelUpNavHost(
+    navController: NavHostController,
+    viewModel: MainViewModel,
+    estadoUi: AppUiState
+){
+    // Leer el estado desde el ViewModel
+//    val estadoUi by viewModel.estadoUi.collectAsState()
+
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Home.route
+    ) {
+        composable(Screen.Home.route) {
+            HomeScreen(
+                productos = viewModel.productos,
+                buscarConsulta = estadoUi.buscarConsulta,
+                hayItemsCarrito = estadoUi.cartItems.isNotEmpty(),
+                onIrAlCarrito = {
+                    viewModel.onDrawerItemClick(Screen.Carrito)
+                }
+            )
+        }
+
+        composable(Screen.Catalogo.route) {
+            CatalogoScreen(
+                productos = viewModel.filtrarProductos(),
+                cartItems = estadoUi.cartItems,
+                onAgregarAlCarrito = { producto ->
+                    viewModel.agregarAlCarrito(producto)
+                },
+                onQuitarUno = { producto ->
+                    viewModel.quitarUnoDelCarrito(producto)
+                }
+            )
+        }
+
+        composable(Screen.Carrito.route) {
+            CarritoScreen(
+                items = estadoUi.cartItems,
+                total = viewModel.calcularTotal(),
+                onQuitarUno = { viewModel.quitarUnoDelCarrito(it) },
+                onEliminar = { viewModel.eliminarDelCarrito(it) // borra todas las unidades
+                },
+                onPagar = {
+                    viewModel.limpiarCarrito()
+                }
+            )
         }
     }
 }

@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.levelupgamer.CarritoManager
+import com.example.levelupgamer.Producto
 import com.example.levelupgamer.R
 
 private val listaOfertas = listOf(
@@ -25,8 +25,17 @@ private val listaOfertas = listOf(
 
 @Composable
 fun HomeScreen(
+    productos: List<Producto>,
+    buscarConsulta: String,
+    hayItemsCarrito: Boolean,
     onIrAlCarrito: () -> Unit
 ) {
+    val resultadosBusqueda = if (buscarConsulta.isNotBlank()) {
+        productos.filter { it.nombre.contains(buscarConsulta, ignoreCase = true) }
+    } else {
+        emptyList()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -68,9 +77,36 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        val itemsCarrito = CarritoManager.items
+        // Resultados de búsqueda, en caso de que la haya
+        if (buscarConsulta.isNotBlank()) {
+            Text(
+                text = "Resultados para \"$buscarConsulta\"",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
 
-        if (itemsCarrito.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (resultadosBusqueda.isEmpty()) {
+                Text(
+                    text = "No se encontraron juegos.",
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            } else {
+                resultadosBusqueda.forEach { producto ->
+                    Text(
+                        text = "• ${producto.nombre}",
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        // El botón de ir al carrito se muestra sólo si hay productos
+        if (hayItemsCarrito) {
             Button(
                 onClick = onIrAlCarrito,
                 modifier = Modifier.padding(top = 16.dp)
@@ -78,12 +114,11 @@ fun HomeScreen(
                 Text("Ir al carrito")
             }
         }
-
     }
 }
 
 @Composable
-private fun OfertaItemImagen(resId: Int) {
+fun OfertaItemImagen(resId: Int) {
     Card(
         modifier = Modifier
             .width(260.dp)

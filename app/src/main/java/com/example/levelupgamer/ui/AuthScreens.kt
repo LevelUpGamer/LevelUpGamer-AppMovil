@@ -69,7 +69,6 @@ fun LoginScreen(
                 text = "Inicia sesión",
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-//                color = colorResource(id = R.color.white),
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
@@ -99,7 +98,6 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = mensaje,
-                    //color = colorResource(id = R.color.accent_light),
                     color = MaterialTheme.colorScheme.error,
                     fontSize = 12.sp
                 )
@@ -131,9 +129,7 @@ fun LoginScreen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    //containerColor = colorResource(id = R.color.purple_primary),
                     containerColor = MaterialTheme.colorScheme.primary,
-                    //contentColor = colorResource(id = R.color.white)
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 )
             ) {
@@ -145,7 +141,6 @@ fun LoginScreen(
             TextButton(onClick = onRegistrarse) {
                 Text(
                     text = "¿No tienes cuenta? Regístrate",
-                    //color = colorResource(id = R.color.white)
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
@@ -237,9 +232,18 @@ fun RegistroScreen(
 
             Button(
                 onClick = {
+                    val correoRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+                    val contrasenaRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&.#^_-]).{8,}$")
+
                     when {
                         usuario.isBlank() || contrasena.isBlank() || confirmaPass.isBlank() ->
                             error = "Debe completar todos los campos."
+
+                        !correoRegex.matches(usuario) ->
+                            error = "Ingrese un correo válido (ej: nombre@correo.com)."
+
+                        !contrasenaRegex.matches(contrasena) ->
+                            error = "La contraseña debe tener mínimo 8 caracteres, con mayúscula, minúscula, número y carácter especial."
 
                         contrasena != confirmaPass ->
                             error = "Las contraseñan no coinciden."
@@ -280,15 +284,17 @@ fun RegistroScreen(
 fun GamerGradientBackground(
     content: @Composable BoxScope.() -> Unit
 ) {
+    val colors = listOf(
+        MaterialTheme.colorScheme.background,
+        MaterialTheme.colorScheme.surface
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(
-                        colorResource(id = R.color.gamer_bg_dark),
-                        colorResource(id = R.color.gamer_bg_light)
-                    )
+                    colors = colors
                 )
             )
     ) {

@@ -10,18 +10,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LevelUpGamer">
 
-        <!-- Login: pantalla inicial -->
+        <!-- Splash: pantalla inicial -->
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.LevelUpGamer" >
+            android:theme="@style/Theme.LevelUp.Splash">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <!-- Drawer principal (Home + Catálogo + Carrito) -->
+        <!-- Login -->
+        <activity
+            android:name=".view.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.LevelUpGamer">
+        </activity>
+
+        <!-- Drawer ppal (Home + Catálogo + Carrito) -->
         <activity
             android:name=".view.DrawerActivity"
             android:exported="false"

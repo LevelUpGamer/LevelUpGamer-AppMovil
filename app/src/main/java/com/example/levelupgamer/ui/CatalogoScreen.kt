@@ -1,13 +1,20 @@
 package com.example.levelupgamer.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -19,45 +26,30 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.levelupgamer.CarritoManager
 import com.example.levelupgamer.Producto
-import com.example.levelupgamer.R
+import com.example.levelupgamer.ui.theme.LevelUpPurpleAccent
+import com.example.levelupgamer.ui.theme.LevelUpPurplePrimary
+import com.example.levelupgamer.ui.theme.LevelUpWhite
+import com.example.levelupgamer.utils.formatearPesos
 import kotlinx.coroutines.launch
 
 @Composable
-fun CatalogoScreen() {
-    val contexto = LocalContext.current
+fun CatalogoScreen(
+    productos: List<Producto>,
+    cartItems: List<Producto>,
+    onAgregarAlCarrito: (Producto) -> Unit,
+    onQuitarUno: (Producto) -> Unit
+) {
+    //val contexto = LocalContext.current
 
     // Snackbar
     val snackbarHostState = remember { SnackbarHostState() }
     val corrutina = rememberCoroutineScope()
 
-    // Mis productos
-    val productos = listOf(
-        Producto(
-            id = 1,
-            nombre = "Elden Ring",
-            precio = 29_990.0,
-            imagenResId = R.drawable.eldenringportada
-        ),
-        Producto(
-            id = 2,
-            nombre = "Resident Evil",
-            precio = 15_990.0,
-            imagenResId = R.drawable.resident4
-        ),
-        Producto(
-            id = 3,
-            nombre = "God of War",
-            precio = 24_990.0,
-            imagenResId = R.drawable.godofwar
-        )
-    )
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -80,23 +72,34 @@ fun CatalogoScreen() {
                     .padding(vertical = 8.dp)
             )
 
-            // Para cada producto
-            productos.forEach { producto ->
-                ProductoCard(
-                    producto = producto,
-                    onAgregar = {
-                        CarritoManager.agregarProducto(producto)
-
-                        //Mensaje de confirmación con Snackbar
-                        corrutina.launch {
-                            snackbarHostState.showSnackbar(
-                                message = "¡${producto.nombre} agregado con éxito!"
-                            )
-                        }
-                    }
+            if (productos.isEmpty()){
+                Text(
+                    text = "No se encontraron juegos.",
+                    color = MaterialTheme.colorScheme.onBackground
                 )
+            } else {
+                // Para cada producto
+                val cartItems = cartItems
 
-                Spacer(modifier = Modifier.height(16.dp))
+                productos.forEach { producto ->
+                    val cantidad = cartItems.count{ it.id == producto.id }
+
+                    ProductoCard(
+                        producto = producto,
+                        cantidadEnCarrito = cantidad,
+                        onAgregar = {
+                            onAgregarAlCarrito(producto)
+                            //Snackbar de confirmación
+                            corrutina.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = "¡${producto.nombre} agregado con éxito!"
+                                )
+                            }
+                        },
+                        onQuitarUno = { onQuitarUno(producto) }
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
         }
     }
@@ -105,7 +108,9 @@ fun CatalogoScreen() {
 @Composable
 fun ProductoCard(
     producto: Producto,
-    onAgregar: () -> Unit
+    cantidadEnCarrito: Int,
+    onAgregar: () -> Unit,
+    onQuitarUno: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -113,7 +118,7 @@ fun ProductoCard(
             .padding(vertical = 8.dp),
         shape = CardDefaults.shape,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
@@ -133,7 +138,7 @@ fun ProductoCard(
 
             Text(
                 text = producto.nombre,
-                fontSize = 16.sp,
+                fontSize = 20.sp, // 16.sp
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
@@ -141,25 +146,66 @@ fun ProductoCard(
             )
 
             Text(
-                text = "$${producto.precio.toInt()}",
-                fontSize = 14.sp,
+            //    text = "$${producto.precio.toInt()}",
+                text = producto.precio.formatearPesos(),
+                fontSize = 18.sp, // 14.sp
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .padding(bottom = 8.dp)
             )
 
-            Button(
-                onClick = onAgregar,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                modifier = Modifier
-                    .padding(bottom = 12.dp)
-            ) {
-                Text(
-                    text = "Agregar"
-                )
+            if (cantidadEnCarrito == 0) {
+//                Button(
+//                    onClick = onAgregar, // mis colores????????????????????????
+//                    //modifier = Modifier.padding(bottom = 12.dp)
+//                ) {
+//                    Text("Agregar")
+//                }
+                Button(
+                    onClick = onAgregar,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = LevelUpPurplePrimary,
+                        contentColor = LevelUpWhite
+                    )
+                ) {
+                    Text("Agregar")
+                }
+            } else {
+                Row(
+                    modifier = Modifier
+                        .padding(bottom = 12.dp),
+//                        .height(40.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+
+                    IconButton(onClick = onQuitarUno) {
+                        Icon(Icons.Default.Remove, contentDescription = "Quitar uno")
+                    }
+
+//                    Text(
+//                        text = cantidadEnCarrito.toString(),
+//                        fontSize = 18.sp,
+//                        fontWeight = FontWeight.Bold,
+//                        modifier = Modifier.padding(horizontal = 16.dp)
+//                    )
+
+                    Box(
+                        modifier = Modifier
+                            .background(LevelUpPurpleAccent, RoundedCornerShape(50))
+                            .padding(horizontal = 16.dp, vertical = 6.dp)
+                    ) {
+                        Text(
+                            text = cantidadEnCarrito.toString(),
+                            color = LevelUpWhite,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    IconButton(onClick = onAgregar) {
+                        Icon(Icons.Default.Add, contentDescription = "Agregar uno")
+                    }
+                }
             }
         }
     }

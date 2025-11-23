@@ -6,6 +6,7 @@ data class Producto(
     val precio: Double,
     val imagenResId: Int // Para poder mostrar la imagen en el carrito
 )
+
 object CarritoManager {
     // Lista para almacenar los productos. Usamos 'mutableListOf' para poder añadir y quitar.
     private val _items = mutableListOf<Producto>()

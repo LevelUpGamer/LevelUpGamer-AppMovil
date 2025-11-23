@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
@@ -36,8 +37,8 @@ fun LevelUpDrawer(
     onSelect: (Screen) -> Unit,
 ) {
         ModalDrawerSheet(
-            drawerContainerColor = colorResource(id = R.color.gamer_bg_dark),
-            drawerContentColor = colorResource(id = R.color.white)
+            drawerContainerColor = MaterialTheme.colorScheme.background,
+            drawerContentColor = MaterialTheme.colorScheme.onBackground
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
                 // LOGO
@@ -47,13 +48,6 @@ fun LevelUpDrawer(
                         .padding(vertical = 24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-//                    Image(
-//                        painter = painterResource(id = R.drawable.splash_logo_padded),
-//                        contentDescription = "Level Up Gamer",
-//                        modifier = Modifier
-//                            .height(96.dp)
-//                            .padding(8.dp)
-//                    )
 
                     Image(
                         painter = painterResource(id = R.drawable.ic_levelupgamer),
