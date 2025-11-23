@@ -70,9 +70,6 @@ fun LevelUpRoot(
 
     // Cuando cambie la ruta seleccionada en el drawer, navegamos
     LaunchedEffect(estadoUi.drawer.selected) {
-    //    val destino = estadoUi.drawer.selected
-//        navController.navigate(destino.route){
-//            launchSingleTop = true
         navController.navigate(estadoUi.drawer.selected.route){
             launchSingleTop = true
         }
@@ -85,13 +82,6 @@ fun LevelUpRoot(
             LevelUpDrawer(
                 estadoDrawer = estadoUi.drawer,
                 onSelect = { screen ->
-//                    when (screen) {
-//                        Screen.CerrarSesion -> onLogout()
-//                        else -> {
-//                            viewModel.onDrawerItemClick(screen)
-//                            corrutinaDrawer.launch { estadoDrawer.close() }
-//                        }
-//                    }
                     if (screen == Screen.CerrarSesion){
                         onLogout()
                     } else {
@@ -104,27 +94,6 @@ fun LevelUpRoot(
     ) {
         Scaffold(
             topBar = {
-//                TopAppBar(
-//                    title = {
-//                        Text(
-//                            text = estadoUi.drawer.selected.route
-//                                .replace("_", " ")
-//                                .replaceFirstChar { it.uppercase() }
-//                        )
-//                    },
-//                    navigationIcon = {
-//                        IconButton(
-//                            onClick = {
-//                                corrutinaDrawer.launch { estadoDrawer.open() }
-//                            }
-//                        ) {
-//                            Icon(
-//                                imageVector = Icons.Filled.Menu,
-//                                contentDescription = "Abrir menú"
-//                            )
-//                        }
-//                    }
-//                )
                 LevelUpTopBar(
                     searchText = estadoUi.buscarConsulta,
                     onSearchTextChange = { viewModel.onBuscarConsultaChange(it) },
@@ -141,16 +110,6 @@ fun LevelUpRoot(
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
-                // Lo que se debería mostrar en cada pantalla
-//                when (estadoUi.drawer.selected) {
-//                    Screen.Home -> HomeScreen(
-//                        onIrAlCarrito = {
-//                            viewModel.onDrawerItemClick(Screen.Carrito)
-//                        }
-//                    )
-//                    Screen.Catalogo -> CatalogoScreen()
-//                    Screen.Carrito -> CarritoScreen()
-//                    else -> { }
                 LevelUpNavHost(
                     navController = navController,
                     viewModel = viewModel,
