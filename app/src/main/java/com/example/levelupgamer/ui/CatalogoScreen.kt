@@ -36,6 +36,8 @@ import com.example.levelupgamer.ui.theme.LevelUpPurplePrimary
 import com.example.levelupgamer.ui.theme.LevelUpWhite
 import com.example.levelupgamer.utils.formatearPesos
 import kotlinx.coroutines.launch
+import androidx.compose.ui.platform.LocalContext
+import com.example.levelupgamer.util.vibrate
 
 @Composable
 fun CatalogoScreen(
@@ -44,7 +46,7 @@ fun CatalogoScreen(
     onAgregarAlCarrito: (Producto) -> Unit,
     onQuitarUno: (Producto) -> Unit
 ) {
-    //val contexto = LocalContext.current
+    val context = LocalContext.current
 
     // Snackbar
     val snackbarHostState = remember { SnackbarHostState() }
@@ -89,6 +91,7 @@ fun CatalogoScreen(
                         cantidadEnCarrito = cantidad,
                         onAgregar = {
                             onAgregarAlCarrito(producto)
+                            vibrate(context, 50)
                             //Snackbar de confirmación
                             corrutina.launch {
                                 snackbarHostState.showSnackbar(
@@ -112,6 +115,8 @@ fun ProductoCard(
     onAgregar: () -> Unit,
     onQuitarUno: () -> Unit
 ) {
+    val context = LocalContext.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -155,12 +160,6 @@ fun ProductoCard(
             )
 
             if (cantidadEnCarrito == 0) {
-//                Button(
-//                    onClick = onAgregar, // mis colores????????????????????????
-//                    //modifier = Modifier.padding(bottom = 12.dp)
-//                ) {
-//                    Text("Agregar")
-//                }
                 Button(
                     onClick = onAgregar,
                     colors = ButtonDefaults.buttonColors(
@@ -179,17 +178,17 @@ fun ProductoCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
 
-                    IconButton(onClick = onQuitarUno) {
+//                    IconButton(onClick = onQuitarUno) {
+//                        Icon(Icons.Default.Remove, contentDescription = "Quitar uno")
+//                    }
+                    IconButton(onClick = {
+                        onQuitarUno()
+                        vibrate(context, 60)
+                    }){
                         Icon(Icons.Default.Remove, contentDescription = "Quitar uno")
                     }
 
-//                    Text(
-//                        text = cantidadEnCarrito.toString(),
-//                        fontSize = 18.sp,
-//                        fontWeight = FontWeight.Bold,
-//                        modifier = Modifier.padding(horizontal = 16.dp)
-//                    )
-
+                    // Cantidad en el carrito
                     Box(
                         modifier = Modifier
                             .background(LevelUpPurpleAccent, RoundedCornerShape(50))
@@ -202,9 +201,16 @@ fun ProductoCard(
                         )
                     }
 
-                    IconButton(onClick = onAgregar) {
-                        Icon(Icons.Default.Add, contentDescription = "Agregar uno")
-                    }
+//                    IconButton(onClick = onAgregar) {
+//                        Icon(Icons.Default.Add, contentDescription = "Agregar uno")
+//                    }
+                        IconButton(onClick = {
+                            onAgregar()
+                            vibrate(context, 50)
+                        }) {
+                            Icon(Icons.Default.Add, contentDescription = "Agregar uno")
+                        }
+
                 }
             }
         }

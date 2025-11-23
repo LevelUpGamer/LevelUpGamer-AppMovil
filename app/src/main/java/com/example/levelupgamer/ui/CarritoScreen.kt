@@ -26,6 +26,8 @@ import com.example.levelupgamer.R
 import com.example.levelupgamer.utils.formatearPesos
 import java.text.NumberFormat
 import java.util.Locale
+import com.example.levelupgamer.util.vibrate
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun CarritoScreen(
@@ -122,6 +124,7 @@ fun CarritoScreen(
             Button(
                 onClick = {
                     onPagar()
+                    vibrate(context, 120)
                     Toast.makeText(context, "Gracias por su compra", Toast.LENGTH_SHORT).show()
                 },
                 modifier = Modifier.fillMaxWidth()
@@ -139,6 +142,8 @@ private fun ItemCarritoRow(
     onQuitarUno: () -> Unit,
     onEliminar: () -> Unit
 ) {
+    val context = LocalContext.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -176,27 +181,24 @@ private fun ItemCarritoRow(
             )
         }
 
-        //Botón de basurero
-//        IconButton(onClick = onEliminar) {
-//            Icon(
-//                painter = painterResource(id = R.drawable.outline_delete_24),
-//                contentDescription = "Eliminar ítem del carrito",
-//                tint = MaterialTheme.colorScheme.onBackground
-//            )
-//        }
-
         // Botón quitar uno solo
-        IconButton(onClick = onQuitarUno) {
+        IconButton(onClick = {
+            onQuitarUno()
+            vibrate(context, 60)
+        }) {
             Icon(Icons.Default.Remove, contentDescription = "Quitar uno")
         }
 
         // Basurero eliminar TODOS
-        IconButton(onClick = onEliminar) {
+        IconButton(onClick = {
+            onEliminar()
+            vibrate(context, 90)
+        }) {
             Icon(
-                painter = painterResource(id = R.drawable.outline_delete_24),
-                contentDescription = "Eliminar todos",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
+                    painter = painterResource(id = R.drawable.outline_delete_24),
+                    contentDescription = "Eliminar todos",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
         }
     }
 }
