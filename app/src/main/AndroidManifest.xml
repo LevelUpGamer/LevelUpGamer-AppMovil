@@ -45,4 +45,7 @@
 
     </application>
 
+    <!-- Para uso de api externa noticias gamer -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>
