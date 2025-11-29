@@ -3,11 +3,15 @@ package com.example.levelupgamer.viewmodel
 import com.example.levelupgamer.Producto
 import com.example.levelupgamer.model.navigation.NavigationEvent
 import com.example.levelupgamer.model.navigation.Screen
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.Assert.*
@@ -16,11 +20,17 @@ import org.junit.Assert.*
 class MainViewModelTest {
 
     private lateinit var viewModel: MainViewModel
-    private val dispatcher = StandardTestDispatcher()
+    private val dispatcherDePrueba = StandardTestDispatcher()
 
     @Before
-    fun setup() {
+    fun antesDeCadaTest() {
+        Dispatchers.setMain(dispatcherDePrueba)
         viewModel = MainViewModel()
+    }
+
+    @After
+    fun despuesDeCadaTest() {
+        Dispatchers.resetMain()
     }
 
     // Drawer
@@ -34,27 +44,47 @@ class MainViewModelTest {
     }
 
     @Test
-    fun `onDrawerItemClick actualiza selected y cierra drawer`() = runTest (dispatcher) {
-        val job = launch { viewModel.eventos.first() }
+    fun `onDrawerItemClick actualiza selected y cierra drawer`() = runTest(dispatcherDePrueba) {
+        // Prepara una corrutina que escuche el flujo y guarde el evento
+        var eventoRecibido: NavigationEvent? = null
+        val job = launch {
+            eventoRecibido = viewModel.eventos.first()  // se completa cuando llegue el primer emit
+        }
 
+        // Ejecuta la acción que dispara viewModelScope.launch { _eventos.emit(...) }
         viewModel.onDrawerItemClick(Screen.Catalogo)
 
-        val state = viewModel.estadoUi.value
-        assertEquals(Screen.Catalogo, state.drawer.selected)
-        assertFalse(state.drawer.open)
+        // Deja avanzar todas las corrutinas pendientes
+        dispatcherDePrueba.scheduler.advanceUntilIdle()
 
+        // Verifica el estado del Drawer
+        val estado = viewModel.estadoUi.value
+        assertEquals(Screen.Catalogo, estado.drawer.selected)
+        assertFalse(estado.drawer.open)
+
+        // Verifica que realmente se haya recibido el evento
+        assertNotNull(eventoRecibido)
+        assertTrue(eventoRecibido is NavigationEvent.NavigateTo)
+        assertEquals(Screen.Catalogo, (eventoRecibido as NavigationEvent.NavigateTo).route)
+
+        // Cancela la corrutina que estaba colectando, por si acaso
         job.cancel()
     }
 
     // Navegación
     @Test
-    fun `retorno emite PopBackStack`() = runTest(dispatcher) {
+    fun `retorno emite PopBackStack`() = runTest(dispatcherDePrueba) {
+        var eventoRecibido: NavigationEvent? = null
         val job = launch {
-            val evento = viewModel.eventos.first()
-            assertTrue(evento is NavigationEvent.PopBackStack)
+            eventoRecibido = viewModel.eventos.first()
         }
 
         viewModel.retorno()
+
+        dispatcherDePrueba.scheduler.advanceUntilIdle()
+
+        assertNotNull(eventoRecibido)
+        assertTrue(eventoRecibido is NavigationEvent.PopBackStack)
 
         job.cancel()
     }

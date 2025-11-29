@@ -3,6 +3,7 @@ package com.example.levelupgamer.utils
 import org.junit.Test
 import org.junit.Assert.assertEquals
 
+
 class FormatUtilsTest {
 
     @Test
