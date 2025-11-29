@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.levelupgamer.Producto
 import com.example.levelupgamer.R
+import com.example.levelupgamer.ui.home.news.SeccionNoticias
 
 private val listaOfertas = listOf(
     R.drawable.ofertab,
@@ -104,6 +105,8 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
         }
+
+        SeccionNoticias()
 
         // El botón de ir al carrito se muestra sólo si hay productos
         if (hayItemsCarrito) {
