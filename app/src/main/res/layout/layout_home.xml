@@ -47,7 +47,10 @@
                     android:background="@drawable/search_background"
                     android:hint="Buscar juegos..."
                     android:textColor="@android:color/black"
-                    android:textColorHint="#999" />
+                    android:textColorHint="#555555"
+                    android:textSize="14sp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
 
                 <!-- Carrito -->
                 <ImageButton

@@ -10,12 +10,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.levelupgamer.Producto
 import com.example.levelupgamer.R
+
 
 private val listaOfertas = listOf(
     R.drawable.ofertab,
@@ -131,7 +133,9 @@ fun OfertaItemImagen(resId: Int) {
         Image(
             painter = painterResource(id = resId),
             contentDescription = "OFerta destacada",
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
     }
+
 }
