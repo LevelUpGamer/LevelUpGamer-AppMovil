@@ -5,8 +5,6 @@ import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -60,31 +58,36 @@ fun SeccionNoticias(
             estado.noticias.isEmpty() -> Text("No hay noticias disponibles.")
 
             else -> {
-                LazyColumn(
+                Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(estado.noticias) { item ->
+                    estado.noticias.forEach { noticia ->
                         NewsCard(
-                            item = item,
+                            item = noticia,
                             onClick = { url ->
-                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                                context.startActivity(intent)
+                                if (!url.isNotBlank()) {
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                                    val pm = context.packageManager
+                                    if (intent.resolveActivity(pm) != null) {
+                                        context.startActivity(intent)
+                                    }
+                                }
                             }
                         )
                     }
 
-                    item {
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "Fuente: MMOBomb.com",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = "Fuente: MMOBomb.com",
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
             }
         }
     }
 }
+
 
 @Composable
 private fun NewsCard(
