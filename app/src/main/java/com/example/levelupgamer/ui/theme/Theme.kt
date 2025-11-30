@@ -14,11 +14,7 @@ private val LevelUpDarkColorScheme = darkColorScheme(
     onSecondary = LevelUpBlack,          // El texto sobre el verde
     onBackground = LevelUpWhite,
     onSurface = LevelUpWhite,
-    error = LevelUpAccentLight           // Tu color de error
-
-//    surfaceVariant = LevelUpPurpleLightGray,
-//    onSurfaceVariant = Color(0xFFCCCCCC), // gris clarito
-
+    error = LevelUpAccentLight           // Color de error
 )
 
 @Composable

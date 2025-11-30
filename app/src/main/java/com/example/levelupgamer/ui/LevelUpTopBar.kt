@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -21,7 +22,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import com.example.levelupgamer.R
+import com.example.levelupgamer.ui.theme.LevelUpAccentLight
 import com.example.levelupgamer.ui.theme.LevelUpBlack
+import com.example.levelupgamer.ui.theme.LevelUpGreenAccent
+import com.example.levelupgamer.ui.theme.LevelUpPurpleDark
 import com.example.levelupgamer.ui.theme.LevelUpPurplePrimary
 import com.example.levelupgamer.ui.theme.LevelUpWhite
 
@@ -34,7 +38,6 @@ fun LevelUpTopBar(
 ) {
     Row(
         modifier = Modifier
-     //       .fillMaxSize()
             .height(56.dp)
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 10.dp),
@@ -45,8 +48,6 @@ fun LevelUpTopBar(
             Icon(
                 painter = painterResource(id = R.drawable.ic_menu),
                 contentDescription = "Menu"
-//                imageVector = Icons.Default.Menu,
-//                contentDescription = "Abrir menú"
             )
         }
 
@@ -62,34 +63,28 @@ fun LevelUpTopBar(
                 .weight(1f)
                 .height(45.dp),
             colors = TextFieldDefaults.colors(
-//                focusedContainerColor = LevelUpWhite,
-//                unfocusedContainerColor = LevelUpWhite,
-//                disabledContainerColor = LevelUpWhite,
-//                cursorColor = LevelUpAccentLight,
-//                focusedTextColor = LevelUpPurpleDark,
-//                unfocusedTextColor = LevelUpPurpleDark,
-//                disabledTextColor = LevelUpPurpleDark,
-//                focusedIndicatorColor = Color.Transparent,
-//                unfocusedIndicatorColor = Color.Transparent,
-//                disabledIndicatorColor = Color.Transparent
                 focusedContainerColor = MaterialTheme.colorScheme.surface,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                 disabledContainerColor = MaterialTheme.colorScheme.surface,
 
                 // Texto
-                focusedTextColor = LevelUpBlack,
-                unfocusedTextColor = LevelUpBlack,
+//                focusedTextColor = LevelUpWhite,
+//                unfocusedTextColor = LevelUpWhite,
+//                disabledTextColor = LevelUpWhite,
 
                 // Placeholder
-                focusedPlaceholderColor = Color(0xFF888888),
-                unfocusedPlaceholderColor = Color(0xFF888888),
+//                focusedPlaceholderColor = Color(0xFF888888),
+//                unfocusedPlaceholderColor = Color(0xFF888888),
+//                disabledPlaceholderColor = Color(0xFF888888),
 
-                // Cursor morado (como Android original)
-                cursorColor = LevelUpPurplePrimary,
+                // Cursor
+                cursorColor = LevelUpAccentLight,
+                errorCursorColor = LevelUpGreenAccent,
 
                 // Indicadores invisibles
                 focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
             )
         )
 
