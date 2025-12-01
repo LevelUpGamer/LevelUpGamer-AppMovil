@@ -44,7 +44,7 @@ class MainViewModel : ViewModel() {
 
     // --- Retrofit para backend ---
     private val api: ProductoApi = Retrofit.Builder()
-        .baseUrl("http://100.30.155.116:8080/") // <- EC2 con Spring Boot
+        .baseUrl("http://3.212.50.160:8080/") // <- EC2 con Spring Boot
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(ProductoApi::class.java)
