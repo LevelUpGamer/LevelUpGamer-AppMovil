@@ -20,10 +20,13 @@ Permite:
 ## Funcionalidades Implementadas
 
 **Autenticación con API propia**
-- Pantalla de inicio de sesión que envía las credenciales (correo y contraseña) a un endpoint de login del backend.
-- Pantalla de registro con validación de correo electrónico y contraseña segura (regex), que se comunica con el endpoint de registro.
-- Manejo de estados de la UI mediante `AuthViewModel` (`estaCargando`, `isLoggedIn`, `registroExitoso`, `error`).
-- Mensajes de error amigables cuando no se puede contactar al servidor y retorno al login después de un registro exitoso.
+- La autenticación utiliza un modelo único Usuario (email, password) enviado al backend. 
+- El inicio de sesión se realiza mediante POST /auth/login, que retorna Response<String> con un mensaje en texto plano. 
+- El registro usa POST /auth/registro, que retorna Response<Usuario> con el usuario creado. 
+- El éxito de ambas operaciones se determina a partir del código HTTP (response.isSuccessful). 
+- Antes de enviar los datos, la app valida el correo y la contraseña mediante expresiones regulares. 
+- AuthViewModel administra los estados principales: estaCargando, isLoggedIn, registroExitoso y error. 
+- Se muestran mensajes claros en caso de credenciales inválidas, errores HTTP o fallas de conexión al servidor.
 
 **Navegación Principal**
 - Implementación de un Drawer lateral que organiza la navegación entre las secciones principales:
