@@ -1,7 +1,12 @@
 package com.example.levelupgamer.data.remote.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class SolicitudDeLoginDto(
+    @SerializedName("email")
     val correo: String,
+
+    @SerializedName("password")
     val contrasena: String
 )
 
@@ -12,7 +17,10 @@ data class RespuestaLoginDto(
 )
 
 data class SolicitudDeRegistroDto(
+    @SerializedName("email")
     val correo: String,
+
+    @SerializedName("password")
     val contrasena: String
 )
 
