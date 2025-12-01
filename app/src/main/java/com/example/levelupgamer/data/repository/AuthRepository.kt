@@ -1,30 +1,33 @@
 package com.example.levelupgamer.data.repository
 
-import com.example.levelupgamer.data.remote.dto.RespuestaLoginDto
-import com.example.levelupgamer.data.remote.dto.RespuestaRegistroDto
-import com.example.levelupgamer.data.remote.dto.SolicitudDeLoginDto
-import com.example.levelupgamer.data.remote.dto.SolicitudDeRegistroDto
+import com.example.levelupgamer.Usuario
+import com.example.levelupgamer.network.ApiService
 import com.example.levelupgamer.network.RetrofitClient
+import retrofit2.HttpException
 
-class AuthRepository{
+class AuthRepository(private val apiService: ApiService = RetrofitClient.api) {
 
-    private val api = RetrofitClient.api
-
-    suspend fun login(correo: String, contrasena: String): Result<RespuestaLoginDto> {
+    suspend fun login(email: String, password: String): Result<String> {
         return try {
-            val body = SolicitudDeLoginDto(correo = correo, contrasena = contrasena)
-            val response = api.login(body)
-            Result.success(response)
+            val response = apiService.login(Usuario(email, password))
+            if (response.isSuccessful) {
+                Result.success(response.body() ?: "Login exitoso")
+            } else {
+                Result.failure(Exception("Error ${response.code()}: ${response.errorBody()?.string()}"))
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    suspend fun register(correo: String, contrasena: String): Result<RespuestaRegistroDto> {
+    suspend fun register(email: String, password: String): Result<Usuario> {
         return try {
-            val body = SolicitudDeRegistroDto(correo = correo, contrasena = contrasena)
-            val response = api.registro(body)
-            Result.success(response)
+            val response = apiService.registro(Usuario(email, password))
+            if (response.isSuccessful) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("Error ${response.code()}: ${response.errorBody()?.string()}"))
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }

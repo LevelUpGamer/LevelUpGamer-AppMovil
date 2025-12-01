@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-
 data class AuthUiState(
     val estaCargando: Boolean = false,
     val isLoggedIn: Boolean = false,
@@ -16,7 +15,7 @@ data class AuthUiState(
     val error: String? = null
 )
 
-class AuthViewModel (
+class AuthViewModel(
     private val repository: AuthRepository = AuthRepository()
 ) : ViewModel() {
 
@@ -26,11 +25,8 @@ class AuthViewModel (
     fun login(correo: String, contrasena: String) {
         viewModelScope.launch {
             _uiState.value = AuthUiState(estaCargando = true)
-
             val result = repository.login(correo, contrasena)
-
             result.onSuccess {
-                // Aquí se podría validar token
                 _uiState.value = AuthUiState(
                     estaCargando = false,
                     isLoggedIn = true,
@@ -38,20 +34,11 @@ class AuthViewModel (
                     error = null
                 )
             }.onFailure { e ->
-                val mensajeError = if (
-                    e.message?.contains("failed to connect", ignoreCase = true) == true ||
-                    e.message?.contains("timed out", ignoreCase = true) == true
-                ) {
-                    "No se pudo contactar al servidor. Verifique su conexión o inténtelo más tarde."
-                } else {
-                    "Error al iniciar sesión"
-                }
-
                 _uiState.value = AuthUiState(
                     estaCargando = false,
                     isLoggedIn = false,
                     registroExitoso = false,
-                    error = mensajeError
+                    error = e.message ?: "Error al iniciar sesión"
                 )
             }
         }
@@ -64,9 +51,7 @@ class AuthViewModel (
                 registroExitoso = false,
                 error = null
             )
-
             val result = repository.register(correo, contrasena)
-
             result.onSuccess {
                 _uiState.value = _uiState.value.copy(
                     estaCargando = false,
@@ -74,19 +59,10 @@ class AuthViewModel (
                     error = null
                 )
             }.onFailure { e ->
-                val mensajeError = if (
-                    e.message?.contains("failed to connect", ignoreCase = true) == true ||
-                    e.message?.contains("timed out", ignoreCase = true) == true
-                ) {
-                    "No se pudo contactar al servidor. Verifique su conexión o inténtelo más tarde."
-                } else {
-                    "Error al registrarse"
-                }
-
                 _uiState.value = _uiState.value.copy(
                     estaCargando = false,
                     registroExitoso = false,
-                    error = mensajeError
+                    error = e.message ?: "Error al registrarse"
                 )
             }
         }
