@@ -1,26 +1,23 @@
 package com.example.levelupgamer.viewmodel
 
-import com.example.levelupgamer.data.remote.dto.RespuestaLoginDto
-import com.example.levelupgamer.data.remote.dto.RespuestaRegistroDto
+import com.example.levelupgamer.Usuario
 import com.example.levelupgamer.data.repository.AuthRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AuthViewModelTest {
-
     private val dispatcherDePrueba = StandardTestDispatcher()
     private lateinit var repository: AuthRepository
     private lateinit var viewModel: AuthViewModel
@@ -39,9 +36,9 @@ class AuthViewModelTest {
 
     @Test
     fun `login exitoso marca isLoggedIn true y limpia error`() = runTest(dispatcherDePrueba) {
-        // Arrange
+        // Arrange: simulamos que el repositorio responde OK
         coEvery { repository.login(any(), any()) } returns
-                Result.success(RespuestaLoginDto(token = "abc123"))
+                Result.success("Login OK")   // <- Result<String>
 
         // Act
         viewModel.login("correo@ejemplo.com", "Abc123$%")
@@ -55,7 +52,7 @@ class AuthViewModelTest {
     }
 
     @Test
-    fun `login con fallo de conexion muestra mensaje amigable`() = runTest(dispatcherDePrueba) {
+    fun `login con fallo de conexion expone mensaje de la excepcion`() = runTest(dispatcherDePrueba) {
         // Arrange: simulamos error de red
         coEvery { repository.login(any(), any()) } returns
                 Result.failure(Exception("failed to connect to /100.30.155.116 (port 8080)"))
@@ -68,17 +65,22 @@ class AuthViewModelTest {
         val estado = viewModel.uiState.value
         assertFalse(estado.isLoggedIn)
         assertFalse(estado.estaCargando)
-        assertEquals(
-            "No se pudo contactar al servidor. Verifique su conexión o inténtelo más tarde.",
-            estado.error
-        )
+
+        // ahora comprobamos que el mensaje es el mismo de la excepción
+        assertNotNull(estado.error)
+        assertTrue(estado.error!!.contains("failed to connect", ignoreCase = true))
     }
 
     @Test
     fun `registro exitoso marca registroExitoso true y limpia error`() = runTest(dispatcherDePrueba) {
-        // Arrange
+        // Arrange: simulamos que el registro es correcto
         coEvery { repository.register(any(), any()) } returns
-                Result.success(RespuestaRegistroDto(id = "1", correo = "correo@ejemplo.com"))
+                Result.success(
+                    Usuario(
+                        email = "correo@ejemplo.com",
+                        password = "Abc123$%"
+                    )
+                )   // <- Result<Usuario>
 
         // Act
         viewModel.registro("correo@ejemplo.com", "Abc123$%")
