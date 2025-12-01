@@ -11,9 +11,11 @@ data class SolicitudDeLoginDto(
 )
 
 data class RespuestaLoginDto(
-    val token: String? = null,
-    val mensaje: String? = null,
-    val idUsuario: String? = null
+    @SerializedName("email")
+    val correo: String,
+
+    @SerializedName("password")
+    val contrasena: String
 )
 
 data class SolicitudDeRegistroDto(
