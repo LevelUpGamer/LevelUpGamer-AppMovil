@@ -10,10 +10,20 @@ class AuthRepository{
 
     private val api = RetrofitClient.api
 
-    suspend fun login(correo: String, contrasena: String): Result<RespuestaLoginDto> {
+//    suspend fun login(correo: String, contrasena: String): Result<RespuestaLoginDto> {
+//        return try {
+//            val body = SolicitudDeLoginDto(correo = correo, contrasena = contrasena)
+//            val response = api.login(body)
+//            Result.success(response)
+//        } catch (e: Exception) {
+//            Result.failure(e)
+//        }
+//    }
+
+    suspend fun login(correo: String, contrasena: String): Result<String> {
         return try {
             val body = SolicitudDeLoginDto(correo = correo, contrasena = contrasena)
-            val response = api.login(body)
+            val response = api.login(body)  // aquí se recibe un String
             Result.success(response)
         } catch (e: Exception) {
             Result.failure(e)

@@ -40,10 +40,15 @@ interface ApiService {
     // ---------- AUTH ----------
     // Importante, ajustar las rutas a nuestro backend real --> "auth/login", "auth/register"
 
+//    @POST("auth/login")
+//    suspend fun login(
+//        @Body request: SolicitudDeLoginDto
+//    ): RespuestaLoginDto
+
     @POST("auth/login")
     suspend fun login(
         @Body request: SolicitudDeLoginDto
-    ): RespuestaLoginDto
+    ): String
 
     @POST("auth/registro")
     suspend fun registro(

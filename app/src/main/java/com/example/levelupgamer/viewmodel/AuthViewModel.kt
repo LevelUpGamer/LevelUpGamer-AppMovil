@@ -29,15 +29,34 @@ class AuthViewModel (
 
             val result = repository.login(correo, contrasena)
 
-            result.onSuccess {
-                // Aquí se podría validar token
-                _uiState.value = AuthUiState(
-                    estaCargando = false,
-                    isLoggedIn = true,
-                    registroExitoso = false,
-                    error = null
-                )
-            }.onFailure { e ->
+//            result
+//                .onSuccess {
+//                // Aquí se podría validar token
+//                _uiState.value = AuthUiState(
+//                    estaCargando = false,
+//                    isLoggedIn = true,
+//                    registroExitoso = false,
+//                    error = null
+//                )
+//            }
+            result.onSuccess { mensaje ->
+
+                if (mensaje.contains("exitoso", ignoreCase = true)) {
+                    _uiState.value = AuthUiState(
+                        estaCargando = false,
+                        isLoggedIn = true,
+                        registroExitoso = false,
+                        error = null
+                    )
+                } else {
+                    _uiState.value = AuthUiState(
+                        estaCargando = false,
+                        isLoggedIn = false,
+                        registroExitoso = false,
+                        error = "Credenciales incorrectas"
+                        )
+                    }
+                }.onFailure { e ->
                 val mensajeError = if (
                     e.message?.contains("failed to connect", ignoreCase = true) == true ||
                     e.message?.contains("timed out", ignoreCase = true) == true
