@@ -45,8 +45,8 @@ interface ApiService {
         @Body request: SolicitudDeLoginDto
     ): RespuestaLoginDto
 
-    @POST("auth/register")
-    suspend fun register(
+    @POST("auth/registro")
+    suspend fun registro(
         @Body request: SolicitudDeRegistroDto
     ): RespuestaRegistroDto
 }
