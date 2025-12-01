@@ -9,7 +9,7 @@ Permite:
 - Quitar unidades o eliminar ítems completos
 - Hacer una simulación de pago (limpiando el carrito)
 - Ver noticias gamer en tiempo real usando una API externa (MMOBomb)
-- Iniciar sesión y registrarse mediante almacenamiento local (SharedPreferences)
+- Iniciar sesión y registrarse con una API propia (backend Level Up Gamer con Spring Boot)
 - Usar un menú lateral (Drawer) con navegación entre pantallas
 - Disfrutar una experiencia visual personalizada con tema propio y vibración háptica
 
@@ -19,10 +19,11 @@ Permite:
 
 ## Funcionalidades Implementadas
 
-**Autenticación Local**
-- Pantalla de inicio de sesión que valida credenciales almacenadas mediante SharedPreferences.
-- Pantalla de registro con validación de correo electrónico y contraseña segura.
-- Manejo de mensajes de error y retorno al login después de registrarse.
+**Autenticación con API propia**
+- Pantalla de inicio de sesión que envía las credenciales (correo y contraseña) a un endpoint de login del backend.
+- Pantalla de registro con validación de correo electrónico y contraseña segura (regex), que se comunica con el endpoint de registro.
+- Manejo de estados de la UI mediante `AuthViewModel` (`estaCargando`, `isLoggedIn`, `registroExitoso`, `error`).
+- Mensajes de error amigables cuando no se puede contactar al servidor y retorno al login después de un registro exitoso.
 
 **Navegación Principal**
 - Implementación de un Drawer lateral que organiza la navegación entre las secciones principales:
@@ -74,10 +75,11 @@ Esta organización facilita el mantenimiento, escalabilidad y claridad en la res
 - Material Design 3
 - Retrofit + Gson
 - Coil (carga de imágenes remotas)
-- Coroutines 
-- SharedPreferences
-- StateFlow y mutableStateOf
-- Compose Navigation
+- Coroutines
+- StateFlow y `mutableStateOf`
+- Navigation Compose
+- API externa de noticias gamer (MMOBomb)
+- API propia Level Up Gamer (Spring Boot, REST) para catálogo de productos y autenticación
 
 ## Pruebas Unitarias
 El proyecto incluye un conjunto de pruebas unitarias desarrolladas con JUnit y herramientas auxiliares como MockWebServer, MockK y Test Dispatchers de Kotlin. Estas pruebas permiten validar el comportamiento de la lógica del ViewModel, la navegación, el consumo de la API externa y funciones utilitarias.
@@ -86,38 +88,38 @@ Las pruebas se encuentran en el directorio estándar app/src/test/java/com/examp
 
 A continuación se detalla lo validado en cada módulo:
 
-**1. Pruebas del servicio de noticias (API MMOBomb)**
+### 1. Pruebas del servicio de noticias (API MMOBomb)
    
-Archivo: MmoNewsApiServiceTest.kt
+**Archivo:** MmoNewsApiServiceTest.kt
    - Validación del parseo correcto del JSON recibido desde MockWebServer. 
    - Verificación de que los campos del modelo se asignan correctamente.
 
-**2. Pruebas del sistema de navegación**
+### 2. Pruebas del sistema de navegación
    
-Archivo: NavigationEventTest.kt
+**Archivo:** NavigationEventTest.kt
    - Validación de creación de eventos de navegación. 
    - Confirmación del uso correcto de parámetros como popUpToRoute, inclusive y singleTop. 
    - Comprobación de los objetos singleton PopBackStack y NavigateUp.
 
-Archivo: ScreenTest.kt
+**Archivo:** ScreenTest.kt
    - Verificación de que cada pantalla posee la ruta correcta.
 
-**3. Pruebas del ViewModel de Noticias**
+### 3. Pruebas del ViewModel de Noticias
    
-Archivo: NoticiasViewModelTest.kt
+**Archivo:** NoticiasViewModelTest.kt
    - Validación de actualización correcta del estado en caso de éxito. 
    - Control de errores cuando la API arroja excepciones. 
    - Uso de un dispatcher de prueba para el manejo determinista de coroutines.
 
-**4. Pruebas de utilidades**
+### 4. Pruebas de utilidades
    
-Archivo: FormatUtilsTest.kt
+**Archivo:** FormatUtilsTest.kt
    - Validación del formateo de valores numéricos a formato monetario chileno.
    - Verificación de redondeo, números grandes y valor cero.
 
-**5. Pruebas del ViewModel principal**
+### 5. Pruebas del ViewModel principal
 
-Archivo: MainViewModelTest.kt
+**Archivo:** MainViewModelTest.kt
    
 Incluyen validación de:
 
@@ -130,3 +132,13 @@ Incluyen validación de:
      - Eliminar todas las unidades de un mismo producto 
      - Vaciar el carrito 
      - Cálculo correcto del total acumulado.
+
+### 6. Pruebas del ViewModel de Autenticación
+
+**Archivo:** AuthViewModelTest.kt
+
+Incluyen validación de:
+
+- Login exitoso: se marca `isLoggedIn = true`, se desactiva `estaCargando` y `error` queda en `null`.
+- Manejo de error de conexión: cuando el repositorio devuelve un fallo de red (por ejemplo `"failed to connect"`), se expone el mensaje de error `"No se pudo contactar al servidor. Verifique su conexión o inténtelo más tarde."`.
+- Registro exitoso: se marca `registroExitoso = true` y se permite que la UI navegue de vuelta al login tras un registro correcto.

@@ -23,7 +23,7 @@ class AuthRepository{
     suspend fun register(correo: String, contrasena: String): Result<RespuestaRegistroDto> {
         return try {
             val body = SolicitudDeRegistroDto(correo = correo, contrasena = contrasena)
-            val response = api.register(body)
+            val response = api.registro(body)
             Result.success(response)
         } catch (e: Exception) {
             Result.failure(e)

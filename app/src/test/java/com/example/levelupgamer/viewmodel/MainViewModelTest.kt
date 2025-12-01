@@ -113,7 +113,8 @@ class MainViewModelTest {
     // Carrito
     @Test
     fun `agregarAlCarrito agrega un producto correctamente`() {
-        val p = viewModel.productos.first()
+        val p = Producto(1, "Producto A", 10.0, 0)
+
         viewModel.agregarAlCarrito(p)
 
         val state = viewModel.estadoUi.value
@@ -123,7 +124,7 @@ class MainViewModelTest {
 
     @Test
     fun `quitarUnoDelCarrito elimina solo una unidad`() {
-        val p = viewModel.productos.first()
+        val p = Producto(1, "Producto A", 10.0, 0)
 
         viewModel.agregarAlCarrito(p)
         viewModel.agregarAlCarrito(p)
@@ -135,7 +136,7 @@ class MainViewModelTest {
 
     @Test
     fun `eliminarDelCarrito borra todas las unidades de un producto`() {
-        val p = viewModel.productos.first()
+        val p = Producto(1, "Producto A", 10.0, 0)
 
         viewModel.agregarAlCarrito(p)
         viewModel.agregarAlCarrito(p)
@@ -147,7 +148,7 @@ class MainViewModelTest {
 
     @Test
     fun `limpiarCarrito deja la lista vacia`() {
-        val p = viewModel.productos.first()
+        val p = Producto(1, "Producto A", 10.0, 0)
 
         viewModel.agregarAlCarrito(p)
         viewModel.agregarAlCarrito(p)
