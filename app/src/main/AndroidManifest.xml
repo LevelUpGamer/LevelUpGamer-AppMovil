@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <!-- Para uso de api externa noticias gamer -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -10,6 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.LevelUpGamer">
 
         <!-- Splash: pantalla inicial -->
@@ -44,8 +47,5 @@
             android:theme="@style/Theme.LevelUpGamer" />
 
     </application>
-
-    <!-- Para uso de api externa noticias gamer -->
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
