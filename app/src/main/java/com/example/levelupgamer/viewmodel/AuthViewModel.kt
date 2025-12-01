@@ -38,17 +38,26 @@ class AuthViewModel (
                     error = null
                 )
             }.onFailure { e ->
+                val mensajeError = if (
+                    e.message?.contains("failed to connect", ignoreCase = true) == true ||
+                    e.message?.contains("timed out", ignoreCase = true) == true
+                ) {
+                    "No se pudo contactar al servidor. Verifique su conexión o inténtelo más tarde."
+                } else {
+                    "Error al iniciar sesión"
+                }
+
                 _uiState.value = AuthUiState(
                     estaCargando = false,
                     isLoggedIn = false,
                     registroExitoso = false,
-                    error = e.message ?: "Error al iniciar sesión"
+                    error = mensajeError
                 )
             }
         }
     }
 
-    fun registrar(correo: String, contrasena: String) {
+    fun registro(correo: String, contrasena: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
                 estaCargando = true,
@@ -65,10 +74,19 @@ class AuthViewModel (
                     error = null
                 )
             }.onFailure { e ->
+                val mensajeError = if (
+                    e.message?.contains("failed to connect", ignoreCase = true) == true ||
+                    e.message?.contains("timed out", ignoreCase = true) == true
+                ) {
+                    "No se pudo contactar al servidor. Verifique su conexión o inténtelo más tarde."
+                } else {
+                    "Error al registrarse"
+                }
+
                 _uiState.value = _uiState.value.copy(
                     estaCargando = false,
                     registroExitoso = false,
-                    error = e.message ?: "Error al registrarse"
+                    error = mensajeError
                 )
             }
         }
