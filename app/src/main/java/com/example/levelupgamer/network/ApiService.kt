@@ -1,10 +1,12 @@
 package com.example.levelupgamer.network
 
+import com.example.levelupgamer.Usuario
 import com.example.levelupgamer.data.remote.dto.ProductoApiDto
 import com.example.levelupgamer.data.remote.dto.RespuestaLoginDto
 import com.example.levelupgamer.data.remote.dto.RespuestaRegistroDto
 import com.example.levelupgamer.data.remote.dto.SolicitudDeLoginDto
 import com.example.levelupgamer.data.remote.dto.SolicitudDeRegistroDto
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -40,18 +42,10 @@ interface ApiService {
     // ---------- AUTH ----------
     // Importante, ajustar las rutas a nuestro backend real --> "auth/login", "auth/register"
 
-//    @POST("auth/login")
-//    suspend fun login(
-//        @Body request: SolicitudDeLoginDto
-//    ): RespuestaLoginDto
 
     @POST("auth/login")
-    suspend fun login(
-        @Body request: SolicitudDeLoginDto
-    ): String
+    suspend fun login(@Body usuario: Usuario): Response<String> // texto plano
 
     @POST("auth/registro")
-    suspend fun registro(
-        @Body request: SolicitudDeRegistroDto
-    ): RespuestaRegistroDto
+    suspend fun registro(@Body usuario: Usuario): Response<Usuario> // JSON
 }

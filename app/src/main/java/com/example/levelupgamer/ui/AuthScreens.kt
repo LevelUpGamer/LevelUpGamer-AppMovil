@@ -177,7 +177,7 @@ fun RegistroScreen(
         if (uiState.registroExitoso) {
             Toast.makeText(
                 contexto,
-                "Usuario registrado correctamente",
+                "com.example.levelupgamer.Usuario registrado correctamente",
                 Toast.LENGTH_SHORT
             ).show()
             authViewModel.consumirRegistroExitoso()
