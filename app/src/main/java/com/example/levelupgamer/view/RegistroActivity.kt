@@ -4,16 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import com.example.levelupgamer.ui.RegistroScreen
 import com.example.levelupgamer.ui.theme.LevelUpGamerTheme
+import com.example.levelupgamer.viewmodel.AuthViewModel
 
 class RegistroActivity : ComponentActivity() {
+
+    private val authViewModel: AuthViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent{
             LevelUpGamerTheme {
                 RegistroScreen(
+                    authViewModel = authViewModel,
                     onRegistroExitoso = {
                         //Después de registrarse, volvemos al Login
                         startActivity(Intent(this, LoginActivity::class.java))
@@ -24,75 +30,3 @@ class RegistroActivity : ComponentActivity() {
         }
     }
 }
-
-//
-//import android.content.Intent
-//import android.os.Bundle
-//import android.widget.Button
-//import android.widget.EditText
-//import android.widget.Toast
-//import androidx.appcompat.app.AppCompatActivity
-//import com.example.levelupgamer.R
-//
-//class RegistroActivity : AppCompatActivity() {
-//
-//    // Nombres de las claves para SharedPreferences
-//    private val PREFS_NAME = "MyGamingPrefs"
-//    private val KEY_USERNAME = "username"
-//    private val KEY_PASSWORD = "password"
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//
-//
-//
-//        setContentView(R.layout.layout_registro)
-//
-//
-//        val etUsuario = findViewById<EditText>(R.id.et_usuario)
-//        val etContrasena = findViewById<EditText>(R.id.et_contrasena)
-//        val btnSend = findViewById<Button>(R.id.btn_send)
-//
-//        // 1. Configurar el Listener para el botón de registro
-//        btnSend.setOnClickListener {
-//            val usuario = etUsuario.text.toString().trim()
-//            val contrasena = etContrasena.text.toString().trim()
-//
-//            // 2. Validar que los campos no estén vacíos
-//            if (usuario.isEmpty() || contrasena.isEmpty()) {
-//                Toast.makeText(this, "Por favor, completa ambos campos.", Toast.LENGTH_SHORT).show()
-//            } else {
-//                // 3. Guardar las credenciales
-//                guardarCredenciales(usuario, contrasena)
-//
-//                // Mensaje de éxito
-//                Toast.makeText(this, "¡Registro exitoso! Datos guardados localmente.", Toast.LENGTH_LONG).show()
-//
-//                val intent = Intent(this, LoginActivity::class.java)
-//                startActivity(intent)
-//
-//                // 3. Cerrar RegistroActivity para que no se pueda devolver
-//                finish()
-//            }
-//        }
-//    }
-//
-//    /**
-//     * Función para guardar el nombre de usuario y la contraseña usando SharedPreferences.
-//     */
-//    private fun guardarCredenciales(usuario: String, contrasena: String) {
-//        // Obtenemos una instancia de SharedPreferences
-//        val sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
-//
-//        // Obtenemos un Editor para modificar los datos
-//        val editor = sharedPreferences.edit()
-//
-//        // Guardamos las claves y valores
-//        editor.putString(KEY_USERNAME, usuario)
-//        editor.putString(KEY_PASSWORD, contrasena)
-//
-//        // Aplicamos los cambios de forma asíncrona (commit() lo haría de forma síncrona)
-//        editor.apply()
-//    }
-//}

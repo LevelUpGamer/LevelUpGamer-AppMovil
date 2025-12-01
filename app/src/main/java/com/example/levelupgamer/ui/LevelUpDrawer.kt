@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +31,9 @@ import androidx.compose.ui.unit.dp
 import com.example.levelupgamer.model.navigation.Screen
 import com.example.levelupgamer.viewmodel.DrawerUiState
 import com.example.levelupgamer.R
+import com.example.levelupgamer.ui.theme.LevelUpGamerBgDark
+import com.example.levelupgamer.ui.theme.LevelUpGamerBgLight
+import com.example.levelupgamer.ui.theme.LevelUpGamerTheme
 
 @Composable
 fun LevelUpDrawer(
@@ -37,8 +41,8 @@ fun LevelUpDrawer(
     onSelect: (Screen) -> Unit,
 ) {
         ModalDrawerSheet(
-            drawerContainerColor = MaterialTheme.colorScheme.background,
-            drawerContentColor = MaterialTheme.colorScheme.onBackground
+            drawerContainerColor = LevelUpGamerBgDark,
+            drawerContentColor = LevelUpGamerBgLight
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
                 // LOGO

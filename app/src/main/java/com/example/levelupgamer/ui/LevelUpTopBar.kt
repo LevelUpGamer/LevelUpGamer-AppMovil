@@ -68,14 +68,14 @@ fun LevelUpTopBar(
                 disabledContainerColor = MaterialTheme.colorScheme.surface,
 
                 // Texto
-//                focusedTextColor = LevelUpWhite,
-//                unfocusedTextColor = LevelUpWhite,
-//                disabledTextColor = LevelUpWhite,
+                focusedTextColor = LevelUpWhite,
+                unfocusedTextColor = LevelUpWhite,
+                disabledTextColor = LevelUpWhite,
 
                 // Placeholder
-//                focusedPlaceholderColor = Color(0xFF888888),
-//                unfocusedPlaceholderColor = Color(0xFF888888),
-//                disabledPlaceholderColor = Color(0xFF888888),
+                focusedPlaceholderColor = Color(0xFFBBBBBB),
+                unfocusedPlaceholderColor = Color(0xFFBBBBBB),
+                disabledPlaceholderColor = Color(0xFF888888),
 
                 // Cursor
                 cursorColor = LevelUpAccentLight,

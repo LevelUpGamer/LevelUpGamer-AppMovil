@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.levelupgamer.Producto
+import com.example.levelupgamer.data.remote.dto.ProductoApiDto
+import com.example.levelupgamer.data.repository.ProductoRepository
 import com.example.levelupgamer.model.navigation.NavigationEvent
 import com.example.levelupgamer.model.navigation.Screen
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,7 +22,7 @@ import retrofit2.http.GET
 // --- API Retrofit ---
 interface ProductoApi {
     @GET("productos")
-    suspend fun getProductos(): List<Producto>
+    suspend fun getProductos(): List<ProductoApiDto> // Modificado de Producto a ProductoApiDto
 }
 
 // --- Estado del Drawer ---
@@ -38,9 +40,11 @@ data class AppUiState(
 
 class MainViewModel : ViewModel() {
 
-    // --- Retrofit para tu backend ---
+    private val productoRepository = ProductoRepository()
+
+    // --- Retrofit para backend ---
     private val api: ProductoApi = Retrofit.Builder()
-        .baseUrl("http://100.30.155.116:8080/") // <- tu EC2 con Spring Boot
+        .baseUrl("http://100.30.155.116:8080/") // <- EC2 con Spring Boot
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(ProductoApi::class.java)
@@ -56,8 +60,19 @@ class MainViewModel : ViewModel() {
     private fun cargarProductos() {
         viewModelScope.launch {
             try {
-                val lista = api.getProductos()
-                _productos.value = lista
+                val listaDto = api.getProductos()
+
+                val listaUi = listaDto.map { dto ->
+                    Producto(
+                        id = dto.id.toIntOrNull() ?: 0,
+                        nombre = dto.titulo,
+                        precio = dto.precio.toDouble(),
+                        imagenUrl = dto.imagen
+                    )
+                }
+
+                _productos.value = listaUi
+
             } catch (e: Exception) {
                 Log.e("API_ERROR", "Error al cargar productos: $e")
             }

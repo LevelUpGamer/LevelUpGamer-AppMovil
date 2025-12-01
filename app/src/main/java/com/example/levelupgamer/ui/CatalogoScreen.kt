@@ -37,6 +37,7 @@ import com.example.levelupgamer.ui.theme.LevelUpWhite
 import com.example.levelupgamer.utils.formatearPesos
 import kotlinx.coroutines.launch
 import androidx.compose.ui.platform.LocalContext
+import coil.compose.rememberAsyncImagePainter
 import com.example.levelupgamer.util.vibrate
 
 @Composable
@@ -132,8 +133,22 @@ fun ProductoCard(
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+//            Image(
+//                painter = painterResource(id = producto.imagenResId),
+//                contentDescription = producto.nombre,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(240.dp),
+//                contentScale = ContentScale.Crop
+//            )
+            val painter = if (!producto.imagenUrl.isNullOrBlank()) {
+                rememberAsyncImagePainter(producto.imagenUrl)
+            } else {
+                painterResource(id = producto.imagenResId)
+            }
+
             Image(
-                painter = painterResource(id = producto.imagenResId),
+                painter = painter,
                 contentDescription = producto.nombre,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -151,7 +166,6 @@ fun ProductoCard(
             )
 
             Text(
-            //    text = "$${producto.precio.toInt()}",
                 text = producto.precio.formatearPesos(),
                 fontSize = 18.sp, // 14.sp
                 color = MaterialTheme.colorScheme.onBackground,
@@ -173,14 +187,10 @@ fun ProductoCard(
                 Row(
                     modifier = Modifier
                         .padding(bottom = 12.dp),
-//                        .height(40.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
 
-//                    IconButton(onClick = onQuitarUno) {
-//                        Icon(Icons.Default.Remove, contentDescription = "Quitar uno")
-//                    }
                     IconButton(onClick = {
                         onQuitarUno()
                         vibrate(context, 60)
@@ -201,9 +211,6 @@ fun ProductoCard(
                         )
                     }
 
-//                    IconButton(onClick = onAgregar) {
-//                        Icon(Icons.Default.Add, contentDescription = "Agregar uno")
-//                    }
                         IconButton(onClick = {
                             onAgregar()
                             vibrate(context, 50)

@@ -28,6 +28,8 @@ import java.text.NumberFormat
 import java.util.Locale
 import com.example.levelupgamer.util.vibrate
 import androidx.compose.ui.platform.LocalContext
+import coil.compose.rememberAsyncImagePainter
+
 
 @Composable
 fun CarritoScreen(
@@ -105,12 +107,7 @@ fun CarritoScreen(
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-//                Text(
-//                    text = "$$totalFormateado",
-//                    fontSize = 18.sp,
-//                    fontWeight = FontWeight.Bold,
-//                    color = MaterialTheme.colorScheme.secondary
-//                )
+
                 Text(
                     text = total.formatearPesos(),
                     fontSize = 18.sp,
@@ -147,13 +144,25 @@ private fun ItemCarritoRow(
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        //    .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         // Imagen del juego
+//        Image(
+//            painter = painterResource(id = producto.imagenResId),
+//            contentDescription = producto.nombre,
+//            modifier = Modifier
+//                .width(80.dp)
+//                .height(100.dp)
+//        )
+        val painter = if (!producto.imagenUrl.isNullOrBlank()) {
+            rememberAsyncImagePainter(producto.imagenUrl)
+        } else {
+            painterResource(id = producto.imagenResId)
+        }
+
         Image(
-            painter = painterResource(id = producto.imagenResId),
+            painter = painter,
             contentDescription = producto.nombre,
             modifier = Modifier
                 .width(80.dp)
@@ -168,16 +177,10 @@ private fun ItemCarritoRow(
         ){
             Text(
                 text = producto.nombre,
-//                fontSize = 16.sp,
-//                fontWeight = FontWeight.Bold,
-//                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                //text = "Precio: $${producto.precio.toInt()}  x $cantidad",
                 text = "Precio: ${producto.precio.formatearPesos()} x $cantidad",
-//                fontSize = 14.sp,
-//                color = MaterialTheme.colorScheme.onBackground
             )
         }
 

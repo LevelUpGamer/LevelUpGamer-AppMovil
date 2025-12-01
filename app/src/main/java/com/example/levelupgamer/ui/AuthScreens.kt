@@ -29,23 +29,40 @@ import com.example.levelupgamer.R
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.colorResource
+import com.example.levelupgamer.ui.theme.LevelUpPurplePrimary
+import com.example.levelupgamer.ui.theme.LevelUpWhite
+import com.example.levelupgamer.viewmodel.AuthViewModel
 
-
-private const val PREFS_NAME = "MyGamingPrefs"
-private const val KEY_USERNAME = "username"
-private const val KEY_PASSWORD = "password"
+//
+//private const val PREFS_NAME = "MyGamingPrefs"
+//private const val KEY_USERNAME = "username"
+//private const val KEY_PASSWORD = "password"
 
 @Composable
 fun LoginScreen(
+    authViewModel: AuthViewModel,
     onLoggeado: () -> Unit,
     onRegistrarse: () -> Unit
 ) {
     val contexto = LocalContext.current
 
-    var usuario by remember { mutableStateOf("") }
+    var correo by remember { mutableStateOf("") }
     var contrasena by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf<String?>(null) }
+
+    // Leemos el estado expuesto por AuthViewModel
+    val uiState by authViewModel.uiState.collectAsState()
+
+    // Cuando el login sea exitoso, navegamos
+    LaunchedEffect(uiState.isLoggedIn) {
+        if (uiState.isLoggedIn) {
+            Toast.makeText(
+                contexto,
+                "Bienvenid@ $correo",
+                Toast.LENGTH_SHORT
+            ).show()
+            onLoggeado()
+        }
+    }
 
     GamerGradientBackground {
         Column(
@@ -56,7 +73,7 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            //Logo
+            // Logo
             Image(
                 painter = painterResource(id = R.drawable.ic_levelupgamer),
                 contentDescription = "Logo Level Up Gamer",
@@ -74,9 +91,9 @@ fun LoginScreen(
             )
 
             OutlinedTextField(
-                value = usuario,
-                onValueChange = { usuario = it },
-                label = { Text("Usuario") },
+                value = correo,
+                onValueChange = { correo = it },
+                label = { Text("Correo") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -93,8 +110,8 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            //Mensaje de error si existe
-            error?.let { mensaje ->
+            // Error que venga del backend
+            uiState.error?.let { mensaje ->
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = mensaje,
@@ -107,33 +124,26 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-                    val prefs = contexto.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-                    val usuarioGuardado = prefs.getString(KEY_USERNAME, null)
-                    val passGuardada = prefs.getString(KEY_PASSWORD, null)
-
-                    if (usuario == usuarioGuardado &&
-                        contrasena == passGuardada &&
-                        usuarioGuardado != null &&
-                        passGuardada != null
-                    ) {
-                        error = null
+                    if (correo.isBlank() || contrasena.isBlank()) {
                         Toast.makeText(
                             contexto,
-                            "Bienvenid@ $usuario",
+                            "Debe completar correo y contraseña.",
                             Toast.LENGTH_SHORT
                         ).show()
-                        onLoggeado()
                     } else {
-                        error = "Usuario o contraseña incorrectos. Inténtalo de nuevo."
+                        // Aquí llamamos a la API via ViewModel
+                        authViewModel.login(correo, contrasena)
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
+//                    containerColor = MaterialTheme.colorScheme.primary,
+//                    contentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = LevelUpPurplePrimary,
+                    contentColor = LevelUpWhite
                 )
             ) {
-                Text("Iniciar sesión")
+                Text(if (uiState.estaCargando) "Ingresando..." else "Iniciar sesión")
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -150,14 +160,30 @@ fun LoginScreen(
 
 @Composable
 fun RegistroScreen(
+    authViewModel: AuthViewModel,
     onRegistroExitoso: () -> Unit
 ) {
     val contexto = LocalContext.current
 
-    var usuario by remember { mutableStateOf("") }
+    var correo by remember { mutableStateOf("") }
     var contrasena by remember { mutableStateOf("") }
     var confirmaPass by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf<String?>(null) }
+    var errorLocal by remember { mutableStateOf<String?>(null) }
+
+    val uiState by authViewModel.uiState.collectAsState()
+
+    // Cuando el registro sea exitoso, volvemos al Login
+    LaunchedEffect(uiState.registroExitoso) {
+        if (uiState.registroExitoso) {
+            Toast.makeText(
+                contexto,
+                "Usuario registrado correctamente",
+                Toast.LENGTH_SHORT
+            ).show()
+            authViewModel.consumirRegistroExitoso()
+            onRegistroExitoso()
+        }
+    }
 
     GamerGradientBackground {
         Column(
@@ -180,15 +206,14 @@ fun RegistroScreen(
                 text = "Regístrate",
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                //color = colorResource(id = R.color.white),
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
             OutlinedTextField(
-                value = usuario,
-                onValueChange = { usuario = it },
-                label = { Text("Usuario") },
+                value = correo,
+                onValueChange = { correo = it },
+                label = { Text("Correo") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -217,12 +242,21 @@ fun RegistroScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            //Mensaje de error si existe
-            error?.let { mensaje ->
+            // Error de validación local
+            errorLocal?.let { mensaje ->
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = mensaje,
-                    //color = colorResource(id = R.color.accent_light),
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 12.sp
+                )
+            }
+
+            // Error que venga del backend
+            uiState.error?.let { mensaje ->
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = mensaje,
                     color = MaterialTheme.colorScheme.error,
                     fontSize = 12.sp
                 )
@@ -236,45 +270,31 @@ fun RegistroScreen(
                     val contrasenaRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&.#^_-]).{8,}$")
 
                     when {
-                        usuario.isBlank() || contrasena.isBlank() || confirmaPass.isBlank() ->
-                            error = "Debe completar todos los campos."
+                        correo.isBlank() || contrasena.isBlank() || confirmaPass.isBlank() ->
+                            errorLocal = "Debe completar todos los campos."
 
-                        !correoRegex.matches(usuario) ->
-                            error = "Ingrese un correo válido (ej: nombre@correo.com)."
+                        !correoRegex.matches(correo) ->
+                            errorLocal = "Ingrese un correo válido (ej: nombre@correo.com)."
 
                         !contrasenaRegex.matches(contrasena) ->
-                            error = "La contraseña debe tener mínimo 8 caracteres, con mayúscula, minúscula, número y carácter especial."
+                            errorLocal = "La contraseña debe tener mínimo 8 caracteres, con mayúscula, minúscula, número y carácter especial."
 
                         contrasena != confirmaPass ->
-                            error = "Las contraseñan no coinciden."
+                            errorLocal = "Las contraseñas no coinciden."
 
                         else -> {
-                            val prefs =
-                                contexto.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-                            prefs.edit()
-                                .putString(KEY_USERNAME, usuario)
-                                .putString(KEY_PASSWORD, contrasena)
-                                .apply()
-
-                            error = null
-                            Toast.makeText(
-                                contexto,
-                                "Usuario registrado correctamente",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            onRegistroExitoso()
+                            errorLocal = null
+                            authViewModel.registrar(correo, contrasena)
                         }
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    //containerColor = colorResource(id = R.color.purple_primary),
                     containerColor = MaterialTheme.colorScheme.primary,
-                    //contentColor = colorResource(id = R.color.white)
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 )
             ) {
-                Text("Enviar")
+                Text(if (uiState.estaCargando) "Registrando..." else "Enviar")
             }
         }
     }

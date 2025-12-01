@@ -77,7 +77,7 @@ fun LevelUpRoot(
 
     ModalNavigationDrawer(
         drawerState = estadoDrawer,
-        gesturesEnabled = false, // Sólo se abre con el botón hamburguesa
+        gesturesEnabled = true, // se puede cerrar tocando fuera o swipe
         drawerContent = {
             LevelUpDrawer(
                 estadoDrawer = estadoUi.drawer,
@@ -127,16 +127,14 @@ fun LevelUpNavHost(
     viewModel: MainViewModel,
     estadoUi: AppUiState
 ){
-    // Leer el estado desde el ViewModel
-//    val estadoUi by viewModel.estadoUi.collectAsState()
-
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
     ) {
         composable(Screen.Home.route) {
+            val productos by viewModel.productos.collectAsState()
             HomeScreen(
-                productos = viewModel.productos,
+                productos = productos,
                 buscarConsulta = estadoUi.buscarConsulta,
                 hayItemsCarrito = estadoUi.cartItems.isNotEmpty(),
                 onIrAlCarrito = {
