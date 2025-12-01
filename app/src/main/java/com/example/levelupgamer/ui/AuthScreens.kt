@@ -284,7 +284,7 @@ fun RegistroScreen(
 
                         else -> {
                             errorLocal = null
-                            authViewModel.registrar(correo, contrasena)
+                            authViewModel.registro(correo, contrasena)
                         }
                     }
                 },
